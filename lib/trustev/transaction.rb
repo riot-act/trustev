@@ -123,7 +123,7 @@ module Trustev
             FirstName: opts[:customer][:first_name] || ' ',
             LastName: opts[:customer][:last_name] || ' ',
             PhoneNumber: opts[:customer][:phone_number] || '0000',
-            DateOfBirth: opts[:customer][:dob] || ' ',
+            DateOfBirth: "\/Date(#{opts[:customer][:dob]}\/" || ' ',
             Email: []
           },
           SessionId: opts[:session_id]
