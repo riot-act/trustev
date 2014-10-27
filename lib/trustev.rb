@@ -13,7 +13,7 @@ module Trustev
   @@password = nil
   @@shared_secret = nil
   @@api_base = 'https://api.trustev.com/v'
-  @@api_version = nil
+  @@api_version = '1.2'
   @@token = nil
   @@token_expire = nil
 
@@ -42,15 +42,7 @@ module Trustev
   end
 
   def self.api_url(url='')
-    @@api_base + api_version + '/' + url
-  end
-
-  def self.api_version=(version)
-    @@api_version = version
-  end
-
-  def self.api_version
-    @@api_version
+    @@api_base + @@api_version + '/' + url
   end
 
   def self.token=(token)
