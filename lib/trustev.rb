@@ -83,6 +83,7 @@ module Trustev
     options = { body: body.to_json, headers: headers}
 
     response = HTTParty.post(api_url(path), options) if method == 'POST'
+    response = HTTParty.get(api_url(path), options) if method == 'GET'
     response = HTTParty.put(api_url(path), options) if method == 'PUT'
     response = HTTParty.delete(api_url(path), options) if method == 'DELETE'
 
