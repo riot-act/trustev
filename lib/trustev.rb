@@ -84,6 +84,7 @@ module Trustev
 
     response = HTTParty.post(api_url(path), options) if method == 'POST'
     response = HTTParty.put(api_url(path), options) if method == 'PUT'
+    response = HTTParty.delete(api_url(path), options) if method == 'DELETE'
 
     raise Error.new("Bad API response", response.code, response.body) if response.code != 200
 
