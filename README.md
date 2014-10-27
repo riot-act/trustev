@@ -194,7 +194,7 @@ See the [trustev API documentation](http://developers.trustev.com/#addprofile) f
 
 #### Update Social
 
-This is similar `Trustev.Social.create`, but only accepts ONE object, instead of an array.
+This is similar `Trustev.Social.create`, but only accepts ONE hash, instead of an array of hashes.
 ```ruby
  Trustev.transaction.update({
    type: 0,
@@ -221,7 +221,7 @@ This is similar `Trustev.Social.create`, but only accepts ONE object, instead of
  Trustev.Profile.retrieve('1234abcd')
 ```
 
-This returns an object with the Trustev Score.
+This returns a hash with the Trustev Score.
 
 ##### Sample Response
 ```ruby
