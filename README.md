@@ -225,17 +225,19 @@ This returns an object with the Trustev Score.
 
 ##### Sample Response
 ```json
- "Code" : 200,
- "Message" : "Success",
- "Profile": {
-   "Sources": [{
-       "Scores": [{
-           "Confidence" : 100,
-           "Parameter" : 0,
-           "Score" : 73
-       }],
-       "Source" : 7
-   }]
+ {
+   "Code": 200,
+   "Message": "Success",
+   "Profile": {
+     "Sources": [{
+         "Scores": [{
+             "Confidence" : 100,
+             "Parameter" : 0,
+             "Score" : 73
+         }],
+         "Source" : 7
+     }]
+   }
  }
 ```
 
