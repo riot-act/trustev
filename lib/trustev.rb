@@ -67,7 +67,7 @@ module Trustev
       Authenticate.retrieve_token
     end
 
-    raise Error.new("Auth token missing or expired") if @token.nil? || @@token_expire-600 >= Time.now.to_i
+    raise Error.new('Auth token missing or expired') if @token.nil? || @@token_expire-600 >= Time.now.to_i
 
     headers = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
     headers['X-Authorization'] = "#{@username} #{@token}" unless @token.nil?
@@ -79,13 +79,13 @@ module Trustev
     response = HTTParty.put(api_url(path), options) if method == 'PUT'
     response = HTTParty.delete(api_url(path), options) if method == 'DELETE'
 
-    raise Error.new("Bad API response", response.code, response.body) if response.code != 200
+    raise Error.new('Bad API response', response.code, response.body) if response.code != 200
 
     if expect_json
       begin
         response = MultiJson.load(response.body, symbolize_keys: true)
       rescue MultiJson::DecodeError
-        raise Error.new("Invalid API response", response.code, response.message)
+        raise Error.new('Invalid API response', response.code, response.message)
       end
     end
 
