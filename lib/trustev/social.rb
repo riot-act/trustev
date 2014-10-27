@@ -5,12 +5,12 @@ module Trustev
 
     def self.create(social_networks=[])
       validate(social_networks)
-      send_request 'SocialService.svc/rest/Profile', [ build social_networks ], 'POST'
+      send_request 'SocialService.svc/rest/Profile', [ build(social_networks) ], 'POST'
     end
 
     def self.update(social_network)
       validate([social_network])
-      send_request "SocialService.svc/rest/Profile/#{social_network[:type]}/#{social_network[:id]}", [ build [social_network]], 'PUT'
+      send_request "SocialService.svc/rest/Profile/#{social_network[:type]}/#{social_network[:id]}", [ build([social_network]) ], 'PUT'
     end
 
     def self.delete(social_network_type, social_network_id)

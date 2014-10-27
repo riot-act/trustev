@@ -45,14 +45,14 @@ module Trustev
     def self.create(opts=nil)
       raise Error.new('Transaction options are missing') if opts.nil?
       validate(opts)
-      send_request 'TransactionService.svc/rest/Transaction', [ build transaction ], 'POST'
+      send_request 'TransactionService.svc/rest/Transaction', [ build(transaction) ], 'POST'
       true
     end
 
     def self.update(opts=nil)
       raise Error.new('Transaction options are missing') if opts.nil?
       validate(opts)
-      send_request "TransactionService.svc/rest/Transaction/#{opts[:transaction_number]}", [ build transaction ], 'PUT'
+      send_request "TransactionService.svc/rest/Transaction/#{opts[:transaction_number]}", [ build(transaction) ], 'PUT'
       true
     end
 
