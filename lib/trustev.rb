@@ -1,10 +1,12 @@
 require 'httparty'
+require 'multi_json'
 
 require 'trustev/version'
 require 'trustev/authenticate'
 require 'trustev/profile'
 require 'trustev/social'
 require 'trustev/transaction'
+require 'trustev/error'
 
 module Trustev
   @@username = nil
@@ -12,6 +14,8 @@ module Trustev
   @@shared_secret = nil
   @@api_base = 'https://api.trustev.com/v'
   @@api_version = nil
+  @@token = nil
+  @@token_expire = nil
 
   def self.username=(username)
     @@username = username
@@ -38,7 +42,7 @@ module Trustev
   end
 
   def self.api_url(url='')
-    @@api_base + api_version + url
+    @@api_base + api_version + '/' + url
   end
 
   def self.api_version=(version)
@@ -49,11 +53,48 @@ module Trustev
     @@api_version
   end
 
-  def send_request(path, body)
-    HTTParty.post(api_url(path),
-                  {
-                    body: body.to_json,
-                    headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
-                  })
+  def self.token=(token)
+    @@token = token
+  end
+
+  def self.token
+    @@token
+  end
+
+  def self.token_expire=(token_expire)
+    @@token_expire = token_expire
+  end
+
+  def self.token_expire
+    @@token_expire
+  end
+
+  def send_request(path, body, method, expect_json=false)
+
+    if @token.nil? || @@token_expire-600 >= Time.now.to_i
+      Authenticate.retrieve_token
+    end
+
+    raise Error.new("Auth token missing or expired") if @token.nil? || @@token_expire-600 >= Time.now.to_i
+
+    headers = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
+    headers['X-Authorization'] = "#{@username} #{@token}" unless @token.nil?
+
+    options = { body: body.to_json, headers: headers}
+
+    response = HTTParty.post(api_url(path), options) if method == 'POST'
+    response = HTTParty.put(api_url(path), options) if method == 'PUT'
+
+    raise Error.new("Bad API response", response.code, response.body) if response.code != 200
+
+    if expect_json
+      begin
+        response = MultiJson.load(response.body, symbolize_keys: true)
+      rescue MultiJson::DecodeError
+        raise Error.new("Invalid API response", response.code, response.message)
+      end
+    end
+
+    response
   end
 end
