@@ -111,28 +111,28 @@ module Trustev
       transaction = {
           TransactionNumber: opts[:transaction_number],
           TransactionData: {
-              Currency: opts[:transaction_data][:currency_code],
-              TotalDelivery: opts[:transaction_data][:total_delivery] || 0,
-              TotalBeforeTax: opts[:transaction_data][:total_before_tax] || 0,
-              TotalDiscount: opts[:transaction_data][:total_discount] || 0,
-              TotalTax: opts[:transaction_data][:total_tax] || 0,
-              TotalTransactionValue: opts[:transaction_data][:total_transaction_value],
-              Timestamp: "\/Date(#{opts[:transaction_data][:timestamp]})\/"
+            Currency: opts[:transaction_data][:currency_code],
+            TotalDelivery: opts[:transaction_data][:total_delivery] || 0,
+            TotalBeforeTax: opts[:transaction_data][:total_before_tax] || 0,
+            TotalDiscount: opts[:transaction_data][:total_discount] || 0,
+            TotalTax: opts[:transaction_data][:total_tax] || 0,
+            TotalTransactionValue: opts[:transaction_data][:total_transaction_value],
+            Timestamp: "\/Date(#{opts[:transaction_data][:timestamp]})\/"
           },
           Customer: {
-              FirstName: opts[:customer][:first_name] || ' ',
-              LastName: opts[:customer][:last_name] || ' ',
-              PhoneNumber: opts[:customer][:phone_number] || '0000',
-              DateOfBirth: opts[:customer][:dob] || ' ',
-              Email: []
+            FirstName: opts[:customer][:first_name] || ' ',
+            LastName: opts[:customer][:last_name] || ' ',
+            PhoneNumber: opts[:customer][:phone_number] || '0000',
+            DateOfBirth: opts[:customer][:dob] || ' ',
+            Email: []
           },
           SessionId: opts[:session_id]
       }
 
       unless opts[:social_network][:type].nil? && opts[:social_network][:ID].nil?
         transaction[:SocialNetwork] = {
-            Type: opts[:social_network][:type],
-            Id: opts[:social_network][:ID]
+          Type: opts[:social_network][:type],
+          Id: opts[:social_network][:ID]
         }
       end
 
@@ -147,23 +147,23 @@ module Trustev
         transaction[:TransactionData][:Item] = []
         opts[:transaction_data][:item].each do | item |
           transaction[:TransactionData][:Item].push({
-                                                        Name: item[:name] || ' ',
-                                                        URL: item[:url] || ' ',
-                                                        ImageURL: item[:image_url] || ' ',
-                                                        Quantity: item[:quantity] || 0,
-                                                        TotalBeforeTax: item[:total_before_tax] || 0,
-                                                        TotalDiscount: item[:total_discount] || 0,
-                                                        TotalTax: item[:total_tax] || 0,
-                                                        TotalItemValue: item[:total_item_value] || 0
-                                                    })
+            Name: item[:name] || ' ',
+            URL: item[:url] || ' ',
+            ImageURL: item[:image_url] || ' ',
+            Quantity: item[:quantity] || 0,
+            TotalBeforeTax: item[:total_before_tax] || 0,
+            TotalDiscount: item[:total_discount] || 0,
+            TotalTax: item[:total_tax] || 0,
+            TotalItemValue: item[:total_item_value] || 0
+        })
         end
       end
 
       opts[:customer][:email].each do | email |
         transaction[:Customer][:Email].push({
-                                                IsDefault: email[:is_default] || false,
-                                                EmailAddress: email[:address] || ' '
-                                            })
+          IsDefault: email[:is_default] || false,
+          EmailAddress: email[:address] || ' '
+        })
       end
 
       unless opts[:customer][:address].nil? || opts[:customer][:address].size == 0
@@ -174,20 +174,22 @@ module Trustev
           transaction[:Customer][:Address].push(address_object)
         end
       end
+
+      transaction
     end
 
     def address_to_object(address)
       {
-          Type: address[:type],
-          FirstName: address[:first_name] || ' ',
-          LastName: address[:last_name] || ' ',
-          Address1: address[:address_1] || ' ',
-          Address2: address[:address_2] || ' ',
-          Address3: address[:address_3] || ' ',
-          City: address[:city] || ' ',
-          State: address[:state] || ' ',
-          PostalCode: address[:postal_code] || ' ',
-          CountryIsoA2Code: address[:country_code]
+        Type: address[:type],
+        FirstName: address[:first_name] || ' ',
+        LastName: address[:last_name] || ' ',
+        Address1: address[:address_1] || ' ',
+        Address2: address[:address_2] || ' ',
+        Address3: address[:address_3] || ' ',
+        City: address[:city] || ' ',
+        State: address[:state] || ' ',
+        PostalCode: address[:postal_code] || ' ',
+        CountryIsoA2Code: address[:country_code]
       }
     end
   end
