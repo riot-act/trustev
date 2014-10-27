@@ -36,6 +36,12 @@ module Trustev
                        TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ
                        VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW)
 
+    ADDRESS_TYPES = [0, 1, 2]
+
+    STATUS_TYPES = [0, 1, 2, 3, 5, 8]
+
+    REASON_TYPES = [0, 1, 2, 3, 4]
+
     def self.create(opts=nil)
       raise Error.new('Transaction options are missing') if opts.nil?
       validate(opts)
@@ -52,6 +58,8 @@ module Trustev
 
     def self.set_status(status, reason, comment, transaction_number)
       raise Error.new('Status code, reason code, and transaction number are required') if status.nil? || reason.nil? || transaction_number.nil?
+      raise Error.new('Invalid Status Code') if STATUS_TYPES.index(status).nil?
+      raise Error.new('Invalid Reason Code') if REASON_TYPES.index(reason).nil?
       body = [
           {
               Status: status,
@@ -83,15 +91,20 @@ module Trustev
       raise Error.new('Invalid Currency Code') if CURRENCY_CODES.index(opts[:transaction_data][:currency_code])
       raise Error.new('Total Transaction Value is required') if opts[:transaction_data][:total_transaction_value].nil?
       opts[:transaction_data][:address].each_with_index do | address, i |
-        opts[:transaction_data][:address][:country_code] = 'NS' if address[:country_code].nil?
-        raise Error.new('Invalid Country Code') if COUNTRY_CODES.index(address[:country_code]).nil?
+        opts[:transaction_data][:address][i] = validate_address address
       end
       raise Error.new('Customer is required') if opts[:customer].nil?
       opts[:customer][:address].each_with_index do | address, i |
-        opts[:customer][:address][:country_code] = 'NS' if address[:country_code].nil?
-        raise Error.new('Invalid Country Code') if COUNTRY_CODES.index(address[:country_code]).nil?
+        opts[:customer][:address][i] = validate_address address
       end
       raise Error.new('Customer email is required') if opts[:customer][:email].nil? || opts[:customer][:email].size == 0
+    end
+
+    def validate_address(address)
+      address[:country_code] = 'NS' if address[:country_code].nil?
+      raise Error.new('Invalid Country Code') if COUNTRY_CODES.index(address[:country_code]).nil?
+      raise Error.new('Invalid Address Type') if ADDRESS_TYPES.index(address[:type]).nil?
+      address
     end
 
     def build(opts)
