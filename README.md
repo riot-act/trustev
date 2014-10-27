@@ -21,7 +21,8 @@ Or install it yourself as:
 ## Configuration
  Set the following options
  ```ruby
- # This is your Trustev Site Username (NOTE: different from Reliance Login Username). It is available under the ‘View API Keys’ section of Reliance.
+ # This is your Trustev Site Username (NOTE: different from Reliance Login Username).
+ # It is available under the ‘View API Keys’ section of Reliance.
  Trustev.username = 'username'
  # This is your Trustev Site Password (NOTE: different from Reliance Login Password).
  Trustev.password = 'password'
@@ -47,7 +48,7 @@ Only the following fields are required:
 * transaction_data.total_transaction_value
 * transaction_data.timestamp
 * customer
- ```ruby
+```ruby
  Trustev.Transaction.create(
    {
      transaction_number: '134abcd',
@@ -120,7 +121,7 @@ Only the following fields are required:
      session_id: 'f39767e2-0cb5-hk97-a296-4619c269d59d'
    }
  )
- ```
+```
  
 #### Update an existing transaction
 
@@ -189,7 +190,7 @@ See the [trustev API documentation](http://developers.trustev.com/#addtransactio
 | 2                   | Linkedin |
 | 3                   | Trustev  |
 
-See the [trustev API documentation](http://developers.trustev.com/#addprofile) for up to date codes.
+See the [trustev API documentation](http://developers.trustev.com/#addprofile) for up to types.
 
 #### Update Social
 
@@ -224,19 +225,17 @@ This returns an object with the Trustev Score.
 
 ##### Sample Response
 ```
- {
-    "Code" : 200,
-    "Message" : "Success",
-    "Profile": {
-      "Sources": [ {
-          "Scores": [ {
-              "Confidence" : 100,
-              "Parameter" : 0,
-              "Score" : 73
-          } ],
-          "Source" : 7
-      } ]
-    }
+ "Code" : 200,
+ "Message" : "Success",
+ "Profile": {
+   "Sources": [{
+       "Scores": [{
+           "Confidence" : 100,
+           "Parameter" : 0,
+           "Score" : 73
+       }],
+       "Source" : 7
+   }]
  }
 ```
 
