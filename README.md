@@ -134,7 +134,7 @@ This takes the same parameters as `Trustev.transaction.create`
 
 ```ruby
  # Trustev.Transaction.set_status(status, reason, comment, transaction_number)
- Trustev.Transaction.set_status(3, 2, 'Transaction was refused due to a Trustev Score of 35', '1234abcd'')
+ Trustev.Transaction.set_status(3, 2, 'Transaction was refused due to a Trustev Score of 35', '1234abcd')
 ```
 
 | Status Code | Description |
@@ -224,7 +224,7 @@ This is similar `Trustev.Social.create`, but only accepts ONE object, instead of
 This returns an object with the Trustev Score.
 
 ##### Sample Response
-```
+```json
  "Code" : 200,
  "Message" : "Success",
  "Profile": {
