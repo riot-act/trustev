@@ -224,18 +224,18 @@ This is similar `Trustev.Social.create`, but only accepts ONE object, instead of
 This returns an object with the Trustev Score.
 
 ##### Sample Response
-```json
+```ruby
  {
-   "Code": 200,
-   "Message": "Success",
-   "Profile": {
-     "Sources": [{
-         "Scores": [{
-             "Confidence" : 100,
-             "Parameter" : 0,
-             "Score" : 73
+   Code: 200,
+   Message: "Success",
+   Profile: {
+     Sources: [{
+         Scores: [{
+             Confidence : 100,
+             Parameter : 0,
+             Score : 73
          }],
-         "Source" : 7
+         Source : 7
      }]
    }
  }
