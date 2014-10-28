@@ -4,6 +4,12 @@ module Trustev
   class DigitalSignature
 
     def initialize(digital_signature, timestamp, session_id, stage_1='')
+
+      raise Error.new('No Username provided.') unless Trustev.username
+      raise Error.new('No Password provided.') unless Trustev.password
+      raise Error.new('No Shared Secret provided.') unless Trustev.shared_secret
+      raise Error.new('No Private Key provided.') unless Trustev.private_key
+
       @digital_signature = digital_signature
       @timestamp = timestamp
       @session_id = session_id
