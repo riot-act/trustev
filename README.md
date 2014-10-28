@@ -28,6 +28,8 @@ Or install it yourself as:
  Trustev.password = 'password'
  # This is your Trustev Site Shared Secret, available from Reliance.
  Trustev.shared_secret = '0f0f0f0f'
+ #This is your Trustev Site Private Key, available from Reliance.
+ Trustev.private_key = 'ffffffff'
  ```
 
 ## Usage
@@ -37,6 +39,21 @@ For more information on the parameters referenced below, see the [trustev API do
 ### Authentication
 
 Authentication is handled automatically. You never have to request an authentication token manually.
+
+### Validation of Digital Signature
+
+```ruby
+ # digital_signature = Trustev.DigitalSignature.new(digital_signature, timestamp, session_id, stage_1)
+ # digital_signature.valid?
+ # or
+ # digital_signature.invalid?
+ digital_signature = Trustev.DigitalSignature.new('ae5b0c9ea554fed8080457debed0cccf832c183b3fa7794b497f5492e98a74a2',
+                                                  20141028163912,
+                                                  'f39767e2-0cb5-hk97-a296-4619c269d59d',
+                                                  '123456.joe@bloggs.com')
+ digital_signature.valid? # true
+ digital_signature.invalid? # false
+```
 
 ### Transaction
 
@@ -134,7 +151,10 @@ This takes the same parameters as `Trustev.transaction.create`
 
 ```ruby
  # Trustev.Transaction.set_status(status, reason, comment, transaction_number)
- Trustev.Transaction.set_status(3, 2, 'Transaction was refused due to a Trustev Score of 35', '1234abcd')
+ Trustev.Transaction.set_status(3,
+                                2,
+                                'Transaction was refused due to a Trustev Score of 35',
+                                '1234abcd')
 ```
 
 | Status Code | Description |

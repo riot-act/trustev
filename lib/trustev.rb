@@ -12,6 +12,7 @@ module Trustev
   @@username = nil
   @@password = nil
   @@shared_secret = nil
+  @@private_key = nil
   @@api_base = 'https://api.trustev.com/v'
   @@api_version = '1.2'
   @@token = nil
@@ -39,6 +40,14 @@ module Trustev
 
   def self.shared_secret
     @@shared_secret
+  end
+
+  def self.private_key=(private_key)
+    @@private_key = private_key
+  end
+
+  def self.private_key
+    @@private_key
   end
 
   def self.api_url(url='')
