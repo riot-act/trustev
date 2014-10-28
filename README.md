@@ -43,11 +43,11 @@ Authentication is handled automatically. You never have to request an authentica
 ### Validation of Digital Signature
 
 ```ruby
- # digital_signature = Trustev.DigitalSignature.new(digital_signature, timestamp, session_id, stage_1)
+ # digital_signature = Trustev::DigitalSignature.new(digital_signature, timestamp, session_id, stage_1)
  # digital_signature.valid?
  # or
  # digital_signature.invalid?
- digital_signature = Trustev.DigitalSignature.new('ae5b0c9ea554fed8080457debed0cccf832c183b3fa7794b497f5492e98a74a2',
+ digital_signature = Trustev::DigitalSignature.new('ae5b0c9ea554fed8080457debed0cccf832c183b3fa7794b497f5492e98a74a2',
                                                   20141028163912,
                                                   'f39767e2-0cb5-hk97-a296-4619c269d59d',
                                                   '123456.joe@bloggs.com')
@@ -66,7 +66,7 @@ Only the following fields are required:
 * transaction_data.timestamp
 * customer
 ```ruby
- Trustev.Transaction.create(
+ Trustev::Transaction.create(
    {
      transaction_number: '134abcd',
      social_network: {
@@ -142,16 +142,16 @@ Only the following fields are required:
  
 #### Update an existing transaction
 
-This takes the same parameters as `Trustev.transaction.create` 
+This takes the same parameters as `Trustev::transaction.create` 
 ```ruby
- Trustev.Transaction.update({...})
+ Trustev::Transaction.update({...})
 ```
 
 #### Set transaction status
 
 ```ruby
- # Trustev.Transaction.set_status(status, reason, comment, transaction_number)
- Trustev.Transaction.set_status(3,
+ # Trustev::Transaction.set_status(status, reason, comment, transaction_number)
+ Trustev::Transaction.set_status(3,
                                 2,
                                 'Transaction was refused due to a Trustev Score of 35',
                                 '1234abcd')
@@ -181,8 +181,8 @@ See the [trustev API documentation](http://developers.trustev.com/#addtransactio
 #### Add transaction BIN
 
 ```ruby
- # Trustev.Transaction.set_bin(bin, transaction_number)
- Trustev.Transaction.set_bin(123456, '1234abcd')
+ # Trustev::Transaction.set_bin(bin, transaction_number)
+ Trustev::Transaction.set_bin(123456, '1234abcd')
 ```
 
 ### Social
@@ -190,7 +190,7 @@ See the [trustev API documentation](http://developers.trustev.com/#addtransactio
 #### Add Social
 
 ```ruby
- Trustev.Social.create([
+ Trustev::Social.create([
    {
      type: 0,
      id: 780219323,
@@ -214,9 +214,9 @@ See the [trustev API documentation](http://developers.trustev.com/#addprofile) f
 
 #### Update Social
 
-This is similar `Trustev.Social.create`, but only accepts ONE hash, instead of an array of hashes.
+This is similar `Trustev::Social.create`, but only accepts ONE hash, instead of an array of hashes.
 ```ruby
- Trustev.transaction.update({
+ Trustev::transaction.update({
    type: 0,
    id: 780219323,
    short_term_token: 'CAAGEIkkiTM4BAHR9ar4XH4uTqK6JaOF1aIGbCBrsQgocHUh9',
@@ -229,16 +229,16 @@ This is similar `Trustev.Social.create`, but only accepts ONE hash, instead of a
 
 #### Delete Social
 ```ruby
- # Trustev.Social.delete(social_network_type, social_network_id)
- Trustev.Social.delete(0, 780219323)
+ # Trustev::Social.delete(social_network_type, social_network_id)
+ Trustev::Social.delete(0, 780219323)
 ``` 
 
 ### Profile
 
 #### Retrieve Profile
 ```ruby
- # Trustev.Profile.retrieve(transaction_number)
- Trustev.Profile.retrieve('1234abcd')
+ # Trustev::Profile.retrieve(transaction_number)
+ Trustev::Profile.retrieve('1234abcd')
 ```
 
 This returns a hash with the Trustev Score.
