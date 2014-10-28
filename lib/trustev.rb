@@ -7,6 +7,7 @@ require 'trustev/profile'
 require 'trustev/social'
 require 'trustev/transaction'
 require 'trustev/error'
+require 'trustev/digital_signature'
 
 module Trustev
   @@username = nil
