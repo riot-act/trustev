@@ -4,15 +4,15 @@ module Trustev
   class Authenticate
     def self.retrieve_token
 
-      raise Error.new('No Username provided.') unless @username
-      raise Error.new('No Password provided.') unless @password
-      raise Error.new('No Shared Secret provided.') unless @shared_secret
+      raise Error.new('No Username provided.') unless Trustev.username
+      raise Error.new('No Password provided.') unless Trustev.password
+      raise Error.new('No Shared Secret provided.') unless Trustev.shared_secret
 
       time = Time.now
 
       body = [
           {
-              UserName: @username,
+              UserName: Trustev.username,
               Password: password(time),
               Sha256Hash: sha256hash(time),
               Timestamp: "\/Date(#{time.to_i.to_s})\/"
@@ -27,11 +27,11 @@ module Trustev
     private
 
     def password(time)
-      generate_hash @password, time
+      generate_hash Trustev.password, time
     end
 
     def sha256hash(time)
-      generate_hash @username, time
+      generate_hash Trustev.username, time
     end
 
     def generate_hash(modifier, time)
@@ -39,7 +39,7 @@ module Trustev
       sha256 << "#{time.strftime '%Y%m%d%H%M%S'}.#{modifier}"
       password_part_1 = sha256.hexdigest
       sha256 = Digest::SHA256.new
-      sha256 << "#{password_part_1}.#{@shared_secret}"
+      sha256 << "#{password_part_1}.#{Trustev.shared_secret}"
       sha256.hexdigest
     end
   end

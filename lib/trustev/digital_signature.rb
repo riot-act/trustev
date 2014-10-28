@@ -23,11 +23,11 @@ module Trustev
 
     def build_signature
       sha256 = Digest::SHA256.new
-      sha256 << "#{@username}.#{@private_key}.#{@timestamp}#{@stage_1}"
+      sha256 << "#{Trustev.username}.#{Trustev.private_key}.#{@timestamp}#{@stage_1}"
       stage_2 = sha256.hexdigest
 
       sha256 = Digest::SHA256.new
-      sha256 << "#{stage_2}.#{@private_key}.#{@session_id}"
+      sha256 << "#{stage_2}.#{Trustev.private_key}.#{@session_id}"
       sha256.hexdigest
     end
   end

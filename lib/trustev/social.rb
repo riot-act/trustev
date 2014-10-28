@@ -44,8 +44,8 @@ module Trustev
           Id: social_network[:Id],
           ShortTermAccessToken: social_network[:short_term_token],
           LongTermAccessToken: social_network[:long_term_token],
-          ShortTermExpiry: "\/Date(#{short_term_expiry})\/",
-          LongTermExpiry: "\/Date(#{long_term_expiry})\/",
+          ShortTermExpiry: "\/Date(#{social_network[:short_term_expiry]})\/",
+          LongTermExpiry: "\/Date(#{social_network[:long_term_expiry]})\/",
           Secret: social_network[:secret]
         })
       end
