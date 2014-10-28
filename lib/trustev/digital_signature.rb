@@ -11,11 +11,11 @@ module Trustev
       @stage_1 = ".#{stage_1}" unless @stage_1.empty?
     end
 
-    def self.valid?
+    def valid?
       build_signature == @digital_signature
     end
 
-    def self.invalid?
+    def invalid?
       build_signature != @digital_signature
     end
 
