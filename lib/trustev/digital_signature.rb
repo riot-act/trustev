@@ -22,7 +22,7 @@ module Trustev
     end
 
     def invalid?
-      build_signature != @digital_signature
+      !valid?
     end
 
     private
