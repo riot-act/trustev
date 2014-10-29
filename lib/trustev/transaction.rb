@@ -42,22 +42,26 @@ module Trustev
 
     REASON_TYPES = [0, 1, 2, 3, 4]
 
-    def self.create(opts=nil)
+    def initialize(transaction_number)
+      raise Error.new('TransactionNumber is required.') if transaction_number.nil?
+      @transaction_number = transaction_number
+    end
+
+    def create(opts=nil)
       raise Error.new('Transaction options are missing') if opts.nil?
       validate(opts)
       send_request 'TransactionService.svc/rest/Transaction', [ build(transaction) ], 'POST'
       true
     end
 
-    def self.update(opts=nil)
+    def update(opts=nil)
       raise Error.new('Transaction options are missing') if opts.nil?
       validate(opts)
-      send_request "TransactionService.svc/rest/Transaction/#{opts[:transaction_number]}", [ build(transaction) ], 'PUT'
+      send_request "TransactionService.svc/rest/Transaction/#{@transaction_number}", [ build(transaction) ], 'PUT'
       true
     end
 
-    def self.set_status(status, reason, comment, transaction_number)
-      raise Error.new('Status code, reason code, and transaction number are required') if status.nil? || reason.nil? || transaction_number.nil?
+    def set_status(status, reason, comment)
       raise Error.new('Invalid Status Code') if STATUS_TYPES.index(status).nil?
       raise Error.new('Invalid Reason Code') if REASON_TYPES.index(reason).nil?
       body = [
@@ -67,24 +71,23 @@ module Trustev
               Comment: comment || ' '
           }
       ]
-      send_request "TransactionService.svc/rest/Transaction/#{transaction_number}/Status", body, 'PUT'
+      send_request "TransactionService.svc/rest/Transaction/#{@transaction_number}/Status", body, 'PUT'
       true
     end
 
-    def self.set_bin(bin, transaction_number)
-      raise Error.new('BIN and transaction number are required') if bin.nil? || transaction_number.nil?
+    def set_bin(bin)
+      raise Error.new('BIN is required') if bin.nil?
       body = [
           {
               BINNumber: bin
           }
       ]
-      send_request "TransactionService.svc/rest/Transaction/#{transaction_number}/BIN", body, 'PUT'
+      send_request "TransactionService.svc/rest/Transaction/#{@transaction_number}/BIN", body, 'PUT'
     end
 
     private
 
     def validate(opts)
-      raise Error.new('TransactionNumber is required.') if opts[:transaction_number].nil?
       raise Error.new('Session ID is required.') if opts[:session_id].nil?
       raise Error.new('Social Network Type is required') if opts[:social_network][:type].nil? && !opts[:social_network][:id].nil?
       raise Error.new('Social Network ID is required') if opts[:social_network][:id].nil? && !opts[:social_network][:type].nil?
@@ -109,7 +112,7 @@ module Trustev
 
     def build(opts)
       transaction = {
-          TransactionNumber: opts[:transaction_number],
+          TransactionNumber: @transaction_number,
           TransactionData: {
             Currency: opts[:transaction_data][:currency_code],
             TotalDelivery: opts[:transaction_data][:total_delivery] || 0,

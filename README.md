@@ -66,9 +66,9 @@ Only the following fields are required:
 * transaction_data.timestamp
 * customer
 ```ruby
- Trustev::Transaction.create(
+ transaction = Trustev::Transaction.new('1234abcd')
+ transaction.create(
    {
-     transaction_number: '134abcd',
      social_network: {
        type: 0
        id: '12345678'
@@ -107,11 +107,11 @@ Only the following fields are required:
            total_item_value: 50.0
          }
        ]
-     }
+     },
      customer: {
        first_name: 'John',
        last_name: 'Doe',
-       phone_number: 00353861658789,
+       phone_number: '00353861658789',
        date_of_birth: 1403256280325,
        email: [
          {
@@ -123,15 +123,15 @@ Only the following fields are required:
          {
            type: 0,
            first_name: 'Joe',
-          last_name: 'Bloggs',
-          address_1: '2011',
-          address_2: 'Imaginary Way',
-          address_3: '',
-          city: 'Anycity',
-          state: 'AnyState',
-          postal_code: '123456',
-          country_code: 'US',
-          is_default: true
+           last_name: 'Bloggs',
+           address_1: '2011',
+           address_2: 'Imaginary Way',
+           address_3: '',
+           city: 'Anycity',
+           state: 'AnyState',
+           postal_code: '123456',
+           country_code: 'US',
+           is_default: true
          }
        ]
      },
@@ -144,17 +144,18 @@ Only the following fields are required:
 
 This takes the same parameters as `Trustev::transaction.create` 
 ```ruby
- Trustev::Transaction.update({...})
+ transaction = Trustev::Transaction.new('1234abcd')
+ transaction.update({...})
 ```
 
 #### Set transaction status
 
 ```ruby
- # Trustev::Transaction.set_status(status, reason, comment, transaction_number)
- Trustev::Transaction.set_status(3,
-                                2,
-                                'Transaction was refused due to a Trustev Score of 35',
-                                '1234abcd')
+ # transaction.set_status(status, reason, comment)
+ transaction = Trustev::Transaction.new('1234abcd')
+ transaction.set_status(3,
+                        2,
+                        'Transaction was refused due to a Trustev Score of 35')
 ```
 
 | Status Code | Description |
@@ -181,8 +182,9 @@ See the [trustev API documentation](http://developers.trustev.com/#addtransactio
 #### Add transaction BIN
 
 ```ruby
- # Trustev::Transaction.set_bin(bin, transaction_number)
- Trustev::Transaction.set_bin(123456, '1234abcd')
+ # transaction.set_bin(bin, transaction_number)
+ transaction = Trustev::Transaction.new('1234abcd')
+ transaction.set_bin(123456)
 ```
 
 ### Social
