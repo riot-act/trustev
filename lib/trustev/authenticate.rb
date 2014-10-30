@@ -22,7 +22,7 @@ module Trustev
 
       response = Trustev.send_request SERVICE_URL, body, 'POST', true, false
       Trustev.token = response[:Token][:APIToken]
-      Trustev.token_expire = response[:Token][:ExpireAt][/\((.*)\)/m, 1].to_i
+      Trustev.token_expire = response[:Token][:ExpireAt][/\((.*)\)/m, 1].to_i/1000
     end
 
     private
