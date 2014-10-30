@@ -73,14 +73,14 @@ module Trustev
 
   def self.send_request(path, body, method, expect_json=false, requires_token=true)
 
-    if requires_token && @@token.nil? || @@token_expire-600 >= Time.now.to_i
+    if requires_token && (@@token.nil? || @@token_expire-600 >= Time.now.to_i)
       Authenticate.retrieve_token
     end
 
-    raise Error.new('Auth token missing or expired') if @token.nil? || @@token_expire-600 >= Time.now.to_i
+    raise Error.new('Auth token missing or expired') if requires_token && (@@token.nil? || @@token_expire-600 >= Time.now.to_i)
 
     headers = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
-    headers['X-Authorization'] = "#{@username} #{@token}" unless @token.nil?
+    headers['X-Authorization'] = "#{@username} #{@token}" if requires_token
 
     options = { body: body.to_json, headers: headers}
 
