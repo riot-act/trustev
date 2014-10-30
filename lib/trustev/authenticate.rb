@@ -17,7 +17,7 @@ module Trustev
         UserName: Trustev.username,
         Password: password(time),
         Sha256Hash: sha256hash(time),
-        Timestamp: "\/Date(#{time.to_i.to_s})\/"
+        Timestamp: "\/Date(#{time.to_i*1000})\/"
       }
 
       response = Trustev.send_request SERVICE_URL, body, 'POST', true, false
@@ -38,9 +38,9 @@ module Trustev
     def self.generate_hash(modifier, time)
       sha256 = Digest::SHA256.new
       sha256 << "#{time.strftime '%Y%m%d%H%M%S'}.#{modifier}"
-      password_part_1 = sha256.hexdigest
+      hash_part_1 = sha256.hexdigest
       sha256 = Digest::SHA256.new
-      sha256 << "#{password_part_1}.#{Trustev.shared_secret}"
+      sha256 << "#{hash_part_1}.#{Trustev.shared_secret}"
       sha256.hexdigest
     end
   end
