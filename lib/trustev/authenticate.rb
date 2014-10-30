@@ -11,7 +11,7 @@ module Trustev
       raise Error.new('No Password provided.') unless Trustev.password
       raise Error.new('No Shared Secret provided.') unless Trustev.shared_secret
 
-      time = Time.now
+      time = Time.now.utc
 
       body = {
         UserName: Trustev.username,
