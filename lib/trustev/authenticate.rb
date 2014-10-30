@@ -2,6 +2,9 @@ require 'digest'
 
 module Trustev
   class Authenticate
+
+    SERVICE_URL = 'AuthenticationService.svc/rest/Token'
+
     def self.retrieve_token
 
       raise Error.new('No Username provided.') unless Trustev.username
@@ -19,7 +22,7 @@ module Trustev
           }
       ]
 
-      response = send_request 'AuthenticationService.svc/rest/Token', body, 'POST', true
+      response = Trustev.send_request SERVICE_URL, body, 'POST', true
       @token = response[:Token][:APIToken]
       @token_expire = response[:Token][:ExpireAt][/\((.*)\)/m, 1].to_i
     end

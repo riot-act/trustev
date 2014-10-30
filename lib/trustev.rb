@@ -71,7 +71,7 @@ module Trustev
     @@token_expire
   end
 
-  def send_request(path, body, method, expect_json=false)
+  def self.send_request(path, body, method, expect_json=false)
 
     if @token.nil? || @@token_expire-600 >= Time.now.to_i
       Authenticate.retrieve_token

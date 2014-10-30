@@ -3,6 +3,8 @@ require 'digest'
 module Trustev
   class Transaction
 
+    SERVICE_URL = 'TransactionService.svc/rest/Transaction'
+
     CURRENCY_CODES = %w(ADP AED AFA AFN ALK ALL AMD ANG AOA AOK AON AOR ARA ARP ARS
                         ARY ATS AUD AWG AYM AZM AZN BAD BAM BBD BDT BEC BEF BEL BGJ
                         BGK BGL BGN BHD BIF BMD BND BOB BOP BOV BRB BRC BRE BRL BRN
@@ -50,14 +52,14 @@ module Trustev
     def create(transaction=nil)
       raise Error.new('Transaction options are missing') if transaction.nil?
       validate(transaction)
-      send_request 'TransactionService.svc/rest/Transaction', [ build(transaction) ], 'POST'
+      Trustev.send_request SERVICE_URL, [ build(transaction) ], 'POST'
       true
     end
 
     def update(transaction=nil)
       raise Error.new('Transaction options are missing') if transaction.nil?
       validate(transaction)
-      send_request "TransactionService.svc/rest/Transaction/#{@transaction_number}", [ build(transaction) ], 'PUT'
+      Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}", [ build(transaction) ], 'PUT'
       true
     end
 
@@ -71,7 +73,7 @@ module Trustev
           Comment: comment || ' '
         }
       ]
-      send_request "TransactionService.svc/rest/Transaction/#{@transaction_number}/Status", body, 'PUT'
+      Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}/Status", body, 'PUT'
       true
     end
 
@@ -82,7 +84,7 @@ module Trustev
           BINNumber: bin
         }
       ]
-      send_request "TransactionService.svc/rest/Transaction/#{@transaction_number}/BIN", body, 'PUT'
+      Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}/BIN", body, 'PUT'
     end
 
     private
