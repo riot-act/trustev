@@ -107,6 +107,6 @@ module Trustev
   private
 
   def self.invalid_token?
-    @@token.nil? || @@token_expire-600 >= Time.now.to_i
+    @@token.nil? || @@token_expire-600 <= Time.now.to_i
   end
 end
