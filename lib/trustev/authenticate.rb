@@ -29,15 +29,15 @@ module Trustev
 
     private
 
-    def password(time)
+    def self.password(time)
       generate_hash Trustev.password, time
     end
 
-    def sha256hash(time)
+    def self.sha256hash(time)
       generate_hash Trustev.username, time
     end
 
-    def generate_hash(modifier, time)
+    def self.generate_hash(modifier, time)
       sha256 = Digest::SHA256.new
       sha256 << "#{time.strftime '%Y%m%d%H%M%S'}.#{modifier}"
       password_part_1 = sha256.hexdigest
