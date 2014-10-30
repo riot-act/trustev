@@ -82,6 +82,8 @@ module Trustev
     headers = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
     headers['X-Authorization'] = "#{@username} #{@token}" if requires_token
 
+    body = { request:  body }
+
     options = { body: body.to_json, headers: headers}
 
     response = HTTParty.post(api_url(path), options) if method == 'POST'

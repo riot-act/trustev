@@ -13,14 +13,12 @@ module Trustev
 
       time = Time.now
 
-      body = [
-        {
-          UserName: Trustev.username,
-          Password: password(time),
-          Sha256Hash: sha256hash(time),
-          Timestamp: "\/Date(#{time.to_i.to_s})\/"
-        }
-      ]
+      body = {
+        UserName: Trustev.username,
+        Password: password(time),
+        Sha256Hash: sha256hash(time),
+        Timestamp: "\/Date(#{time.to_i.to_s})\/"
+      }
 
       response = Trustev.send_request SERVICE_URL, body, 'POST', true, false
       Trustev.token = response[:Token][:APIToken]

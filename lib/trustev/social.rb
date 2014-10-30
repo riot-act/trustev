@@ -6,16 +6,16 @@ module Trustev
 
     def self.create(social_networks=[])
       validate(social_networks)
-      Trustev.send_request SERVICE_URL, [ build(social_networks) ], 'POST'
+      Trustev.send_request SERVICE_URL, build(social_networks), 'POST'
     end
 
     def self.update(social_network)
       validate([social_network])
-      Trustev.send_request "#{SERVICE_URL}/#{social_network[:type]}/#{social_network[:id]}", [ build([social_network]) ], 'PUT'
+      Trustev.send_request "#{SERVICE_URL}/#{social_network[:type]}/#{social_network[:id]}", build([social_network]), 'PUT'
     end
 
     def self.delete(social_network_type, social_network_id)
-      Trustev.send_request "#{SERVICE_URL}/#{social_network_type}/#{social_network_id}", [], 'DELETE'
+      Trustev.send_request "#{SERVICE_URL}/#{social_network_type}/#{social_network_id}", {}, 'DELETE'
     end
 
     private

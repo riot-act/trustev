@@ -52,38 +52,34 @@ module Trustev
     def create(transaction=nil)
       raise Error.new('Transaction options are missing') if transaction.nil?
       validate(transaction)
-      Trustev.send_request SERVICE_URL, [ build(transaction) ], 'POST'
+      Trustev.send_request SERVICE_URL, build(transaction), 'POST'
       true
     end
 
     def update(transaction=nil)
       raise Error.new('Transaction options are missing') if transaction.nil?
       validate(transaction)
-      Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}", [ build(transaction) ], 'PUT'
+      Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}", build(transaction), 'PUT'
       true
     end
 
     def set_status(status, reason, comment)
       raise Error.new('Invalid Status Code') if STATUS_TYPES.index(status).nil?
       raise Error.new('Invalid Reason Code') if REASON_TYPES.index(reason).nil?
-      body = [
-        {
-          Status: status,
-          Reason: reason,
-          Comment: comment || ' '
-        }
-      ]
+      body = {
+        Status: status,
+        Reason: reason,
+        Comment: comment || ' '
+      }
       Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}/Status", body, 'PUT'
       true
     end
 
     def set_bin(bin)
       raise Error.new('BIN is required') if bin.nil?
-      body = [
-        {
-          BINNumber: bin
-        }
-      ]
+      body = {
+        BINNumber: bin
+      }
       Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}/BIN", body, 'PUT'
     end
 
