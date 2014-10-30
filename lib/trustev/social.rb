@@ -20,7 +20,7 @@ module Trustev
 
     private
 
-    def validate(social_networks)
+    def self.validate(social_networks)
       raise Error.new('Social Network array is empty') if social_networks.size == 0
       social_networks.each do | social_network |
         raise Error.new('Invalid Social Network Type') if SOCIAL_NETWORK_TYPES.index(social_network[:type]).nil?
@@ -34,7 +34,7 @@ module Trustev
       end
     end
 
-    def build(social_networks)
+    def self.build(social_networks)
       social_network_data = {
         SocialNetworks: []
       }
