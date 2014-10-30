@@ -126,7 +126,7 @@ module Trustev
           FirstName: transaction[:customer][:first_name] || ' ',
           LastName: transaction[:customer][:last_name] || ' ',
           PhoneNumber: transaction[:customer][:phone_number] || '0000',
-          DateOfBirth: "\/Date(#{transaction[:customer][:dob]}\/" || ' ',
+          DateOfBirth: transaction[:customer][:dob].nil? ? ' ' : "\/Date(#{transaction[:customer][:dob]})\/",
           Email: []
         },
         SessionId: transaction[:session_id]
