@@ -47,16 +47,16 @@ module Trustev
       @transaction_number = transaction_number
     end
 
-    def create(opts=nil)
-      raise Error.new('Transaction options are missing') if opts.nil?
-      validate(opts)
+    def create(transaction=nil)
+      raise Error.new('Transaction options are missing') if transaction.nil?
+      validate(transaction)
       send_request 'TransactionService.svc/rest/Transaction', [ build(transaction) ], 'POST'
       true
     end
 
-    def update(opts=nil)
-      raise Error.new('Transaction options are missing') if opts.nil?
-      validate(opts)
+    def update(transaction=nil)
+      raise Error.new('Transaction options are missing') if transaction.nil?
+      validate(transaction)
       send_request "TransactionService.svc/rest/Transaction/#{@transaction_number}", [ build(transaction) ], 'PUT'
       true
     end
@@ -65,11 +65,11 @@ module Trustev
       raise Error.new('Invalid Status Code') if STATUS_TYPES.index(status).nil?
       raise Error.new('Invalid Reason Code') if REASON_TYPES.index(reason).nil?
       body = [
-          {
-              Status: status,
-              Reason: reason,
-              Comment: comment || ' '
-          }
+        {
+          Status: status,
+          Reason: reason,
+          Comment: comment || ' '
+        }
       ]
       send_request "TransactionService.svc/rest/Transaction/#{@transaction_number}/Status", body, 'PUT'
       true
@@ -78,29 +78,31 @@ module Trustev
     def set_bin(bin)
       raise Error.new('BIN is required') if bin.nil?
       body = [
-          {
-              BINNumber: bin
-          }
+        {
+          BINNumber: bin
+        }
       ]
       send_request "TransactionService.svc/rest/Transaction/#{@transaction_number}/BIN", body, 'PUT'
     end
 
     private
 
-    def validate(opts)
-      raise Error.new('Session ID is required.') if opts[:session_id].nil?
-      raise Error.new('Social Network Type is required') if opts[:social_network][:type].nil? && !opts[:social_network][:id].nil?
-      raise Error.new('Social Network ID is required') if opts[:social_network][:id].nil? && !opts[:social_network][:type].nil?
-      raise Error.new('Invalid Currency Code') if CURRENCY_CODES.index(opts[:transaction_data][:currency_code])
-      raise Error.new('Total Transaction Value is required') if opts[:transaction_data][:total_transaction_value].nil?
-      opts[:transaction_data][:address].each_with_index do | address, i |
-        opts[:transaction_data][:address][i] = validate_address address
+    def validate(transaction)
+      raise Error.new('Session ID is required.') if transaction[:session_id].nil?
+      unless transaction[:social_network].nil?
+        raise Error.new('Social Network Type is required') if transaction[:social_network][:type].nil? && !transaction[:social_network][:id].nil?
+        raise Error.new('Social Network ID is required') if transaction[:social_network][:id].nil? && !transaction[:social_network][:type].nil?
       end
-      raise Error.new('Customer is required') if opts[:customer].nil?
-      opts[:customer][:address].each_with_index do | address, i |
-        opts[:customer][:address][i] = validate_address address
+      raise Error.new('Invalid Currency Code') if CURRENCY_CODES.index(transaction[:transaction_data][:currency_code])
+      raise Error.new('Total Transaction Value is required') if transaction[:transaction_data][:total_transaction_value].nil?
+      transaction[:transaction_data][:address].each_with_index do | address, i |
+        transaction[:transaction_data][:address][i] = validate_address address
       end
-      raise Error.new('Customer email is required') if opts[:customer][:email].nil? || opts[:customer][:email].size == 0
+      raise Error.new('Customer is required') if transaction[:customer].nil?
+      transaction[:customer][:address].each_with_index do | address, i |
+        transaction[:customer][:address][i] = validate_address address
+      end
+      raise Error.new('Customer email is required') if transaction[:customer][:email].nil? || transaction[:customer][:email].size == 0
     end
 
     def validate_address(address)
@@ -110,46 +112,46 @@ module Trustev
       address
     end
 
-    def build(opts)
-      transaction = {
-          TransactionNumber: @transaction_number,
-          TransactionData: {
-            Currency: opts[:transaction_data][:currency_code],
-            TotalDelivery: opts[:transaction_data][:total_delivery] || 0,
-            TotalBeforeTax: opts[:transaction_data][:total_before_tax] || 0,
-            TotalDiscount: opts[:transaction_data][:total_discount] || 0,
-            TotalTax: opts[:transaction_data][:total_tax] || 0,
-            TotalTransactionValue: opts[:transaction_data][:total_transaction_value],
-            Timestamp: "\/Date(#{opts[:transaction_data][:timestamp]})\/"
-          },
-          Customer: {
-            FirstName: opts[:customer][:first_name] || ' ',
-            LastName: opts[:customer][:last_name] || ' ',
-            PhoneNumber: opts[:customer][:phone_number] || '0000',
-            DateOfBirth: "\/Date(#{opts[:customer][:dob]}\/" || ' ',
-            Email: []
-          },
-          SessionId: opts[:session_id]
+    def build(transaction)
+      built_transaction = {
+        TransactionNumber: @transaction_number,
+        TransactionData: {
+          Currency: transaction[:transaction_data][:currency_code],
+          TotalDelivery: transaction[:transaction_data][:total_delivery] || 0,
+          TotalBeforeTax: transaction[:transaction_data][:total_before_tax] || 0,
+          TotalDiscount: transaction[:transaction_data][:total_discount] || 0,
+          TotalTax: transaction[:transaction_data][:total_tax] || 0,
+          TotalTransactionValue: transaction[:transaction_data][:total_transaction_value],
+          Timestamp: "\/Date(#{transaction[:transaction_data][:timestamp]})\/"
+        },
+        Customer: {
+          FirstName: transaction[:customer][:first_name] || ' ',
+          LastName: transaction[:customer][:last_name] || ' ',
+          PhoneNumber: transaction[:customer][:phone_number] || '0000',
+          DateOfBirth: "\/Date(#{transaction[:customer][:dob]}\/" || ' ',
+          Email: []
+        },
+        SessionId: transaction[:session_id]
       }
 
-      unless opts[:social_network][:type].nil? && opts[:social_network][:ID].nil?
-        transaction[:SocialNetwork] = {
-          Type: opts[:social_network][:type],
-          Id: opts[:social_network][:ID]
+      unless transaction[:social_network].nil?
+        built_transaction[:SocialNetwork] = {
+          Type: transaction[:social_network][:type],
+          Id: transaction[:social_network][:ID]
         }
       end
 
-      unless opts[:transaction_data][:address].nil? || opts[:transaction_data][:address].size == 0
-        transaction[:TransactionData][:Address] = []
-        opts[:transaction_data][:address].each do | address |
-          transaction[:TransactionData][:Address].push(address_to_object address)
+      unless transaction[:transaction_data][:address].nil? || transaction[:transaction_data][:address].size == 0
+        built_transaction[:TransactionData][:Address] = []
+        transaction[:transaction_data][:address].each do | address |
+          built_transaction[:TransactionData][:Address].push(address_to_object address)
         end
       end
 
-      unless opts[:transaction_data][:item].nil? || opts[:transaction_data][:item].size == 0
-        transaction[:TransactionData][:Item] = []
-        opts[:transaction_data][:item].each do | item |
-          transaction[:TransactionData][:Item].push({
+      unless transaction[:transaction_data][:item].nil? || transaction[:transaction_data][:item].size == 0
+        built_transaction[:TransactionData][:Item] = []
+        transaction[:transaction_data][:item].each do | item |
+          built_transaction[:TransactionData][:Item].push({
             Name: item[:name] || ' ',
             URL: item[:url] || ' ',
             ImageURL: item[:image_url] || ' ',
@@ -162,23 +164,23 @@ module Trustev
         end
       end
 
-      opts[:customer][:email].each do | email |
-        transaction[:Customer][:Email].push({
+      transaction[:customer][:email].each do | email |
+        built_transaction[:Customer][:Email].push({
           IsDefault: email[:is_default] || false,
           EmailAddress: email[:address] || ' '
         })
       end
 
-      unless opts[:customer][:address].nil? || opts[:customer][:address].size == 0
-        transaction[:Customer][:Address] = []
-        opts[:customer][:address].each do | address |
+      unless transaction[:customer][:address].nil? || transaction[:customer][:address].size == 0
+        built_transaction[:Customer][:Address] = []
+        transaction[:customer][:address].each do | address |
           address_object = address_to_object address
           address_object[:IsDefault] = address[:is_default] || false
-          transaction[:Customer][:Address].push(address_object)
+          built_transaction[:Customer][:Address].push(address_object)
         end
       end
 
-      transaction
+      built_transaction
     end
 
     def address_to_object(address)
