@@ -66,10 +66,11 @@ module Trustev
     def set_status(status, reason, comment)
       raise Error.new('Invalid Status Code') if STATUS_TYPES.index(status).nil?
       raise Error.new('Invalid Reason Code') if REASON_TYPES.index(reason).nil?
+      raise Error.new('Status comment cannot be blank') if comment.nil? || comment.empty?
       body = {
         Status: status,
         Reason: reason,
-        Comment: comment || ' '
+        Comment: comment
       }
       Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}/Status", body, 'PUT'
       true
