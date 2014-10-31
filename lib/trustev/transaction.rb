@@ -91,7 +91,7 @@ module Trustev
         raise Error.new('Social Network Type is required') if transaction[:social_network][:type].nil? && !transaction[:social_network][:id].nil?
         raise Error.new('Social Network ID is required') if transaction[:social_network][:id].nil? && !transaction[:social_network][:type].nil?
       end
-      raise Error.new('Invalid Currency Code') if CURRENCY_CODES.index(transaction[:transaction_data][:currency_code])
+      raise Error.new('Invalid Currency Code') if CURRENCY_CODES.index(transaction[:transaction_data][:currency_code]).nil?
       raise Error.new('Total Transaction Value is required') if transaction[:transaction_data][:total_transaction_value].nil?
       transaction[:transaction_data][:address].each_with_index do | address, i |
         transaction[:transaction_data][:address][i] = validate_address address
