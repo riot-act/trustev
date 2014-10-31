@@ -126,11 +126,13 @@ module Trustev
           FirstName: transaction[:customer][:first_name] || ' ',
           LastName: transaction[:customer][:last_name] || ' ',
           PhoneNumber: transaction[:customer][:phone_number] || '0000',
-          DateOfBirth: transaction[:customer][:dob].nil? ? ' ' : "\/Date(#{transaction[:customer][:dob]})\/",
           Email: []
         },
         SessionId: transaction[:session_id]
       }
+
+      built_transaction[:Customer][:DateOfBirth] =
+        "\/Date(#{transaction[:customer][:dob]})\/" unless transaction[:customer][:dob].nil?
 
       unless transaction[:social_network].nil?
         built_transaction[:SocialNetwork] = {
