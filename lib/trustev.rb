@@ -80,7 +80,7 @@ module Trustev
     raise Error.new('Auth token missing or expired') if requires_token && invalid_token?
 
     headers = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
-    headers['X-Authorization'] = "#{@username} #{@token}" if requires_token
+    headers['X-Authorization'] = "#{@@username} #{@@token}" if requires_token
 
     body = { request:  body }
 
