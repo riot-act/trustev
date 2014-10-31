@@ -237,15 +237,17 @@ This is similar `Trustev::Social.create`, but only accepts ONE hash, instead of 
 
 ### Profile
 
-#### Retrieve Profile
+#### Retrieve Raw Scores
 ```ruby
- # Trustev::Profile.retrieve(transaction_number)
+ # profile = Trustev::Profile.new(transaction_number)
+ # profile.retrieve_scores
  Trustev::Profile.retrieve('1234abcd')
+ profile.retrieve_scores
 ```
 
 This returns a hash with the Trustev Score.
 
-##### Sample Response
+###### Sample Response
 ```ruby
  {
    Code: 200,
@@ -273,6 +275,26 @@ This returns a hash with the Trustev Score.
 | Parameter (int)      | This will be The Trustev parameter which the score is based on                                                                    |
 | Score (decimal)      | This is the Trustev Score                                                                                                         |
 | Source (int)         | This will be the TrustevProfile Score Source on which the Trustev Scores Array was based on                                       |
+
+#### Retrieve Overall Trustev score
+```ruby
+ # profile = Trustev::Profile.new(transaction_number)
+ # profile.get_overall_score
+ Trustev::Profile.retrieve('1234abcd')
+ profile.get_overall_score
+```
+
+This returns the overall Trustev score
+
+#### Retrieve A Specific score
+```ruby
+ # profile = Trustev::Profile.new(transaction_number)
+ # profile.get_score(source_id, parameter_id)
+ Trustev::Profile.retrieve('1234abcd')
+ profile.get_score(7, 0)
+```
+
+This returns a score from a specific source and parameter 
 
 | Score Source | Description |
 |--------------|-------------|
