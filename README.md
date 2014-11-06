@@ -70,11 +70,11 @@ Only the following fields are required:
  transaction.create(
    {
      social_network: {
-       type: 0
+       type: 0,
        id: '12345678'
      },
      transaction_data: {
-       currency: 'EUR',
+       currency_code: 'EUR',
        total_delivery: 10.0,
        total_before_tax: 40,
        total_discount: 10,
@@ -153,9 +153,7 @@ This takes the same parameters as `Trustev::transaction.create`
 ```ruby
  # transaction.set_status(status, reason, comment)
  transaction = Trustev::Transaction.new('1234abcd')
- transaction.set_status(3,
-                        2,
-                        'Transaction was refused due to a Trustev Score of 35')
+ transaction.set_status(3, 2, 'Transaction was refused due to a Trustev Score of 35')
 ```
 
 | Status Code | Description |

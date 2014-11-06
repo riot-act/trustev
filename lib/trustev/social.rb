@@ -42,16 +42,16 @@ module Trustev
       social_networks.each do | social_network |
         social_network_data[:SocialNetworks].push({
           Type: social_network[:type],
-          Id: social_network[:Id],
+          Id: social_network[:id],
           ShortTermAccessToken: social_network[:short_term_token],
           LongTermAccessToken: social_network[:long_term_token],
-          ShortTermExpiry: "\/Date(#{social_network[:short_term_expiry]})\/",
-          LongTermExpiry: "\/Date(#{social_network[:long_term_expiry]})\/",
+          ShortTermAccessTokenExpiry: "\/Date(#{social_network[:short_term_expiry]})\/",
+          LongTermAccessTokenExpiry: "\/Date(#{social_network[:long_term_expiry]})\/",
           Secret: social_network[:secret]
         })
       end
 
-      social_networks
+      social_network_data
     end
   end
 end

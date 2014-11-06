@@ -10,20 +10,21 @@ module Trustev
                         BGK BGL BGN BHD BIF BMD BND BOB BOP BOV BRB BRC BRE BRL BRN
                         BRR BSD BTN BUK BWP BYB BYR BZD CAD CDF CHC CHE CHF CHW CLF
                         CLP CNX CNY COP COU CRC CSD CSJ CSK CUC CUP CVE CYP CZK DDM
-                        DEM DJF DKK DOP DZD ECS ECV EEK EGP EQE ERN ESA ESB ESP ETB EUR EUR
-                        FIM FJD FKP FRF GBP GEK GEL GHC GHP GHS GIP GMD GNE GNF GNS GQE GRD
-                        GTQ GWE GWP GYD HKD HNL HRD HRK HTG HUF IDR IEP ILP ILR ILS INR IQD
-                        IRR ISJ ISK ITL JMD JOD JPY KES KGS KHR KMF KPW KRW KWD KYD KZT LAJ
-                        LAK LBP LKR LRD LSL LSM LTL LTT LUC LUF LUL LVL LVR LYD MAD MAF MDL
-                        MGA MGF MKD MLF MMK MNT MOP MRO MTL MTP MUR MVQ MVR MWK MXN MXP MXV
-                        MYR MZE MZM MZN NAD NGN NIC NIO NLG NOK NPR NZD OMR PAB PEH PEI PEN
-                        PES PGK PHP PKR PLN PLZ PTE PYG QAR RHD ROK ROL RON RSD RUB RUR RWF
-                        SAR SBD SCR SDD SDG SDP SEK SGD SHP SIT SKK SLL SOS SRD SRG SSP STD
-                        SUR SVC SYP SZL THB TJR TJS TMM TMT TND TOP TPE TRL TRY TTD TWD TZS
-                        UAH UAK UGS UGW UGX USD USN USS UYI UYN UYP UYU UZS VEB VEF VNC VND
-                        VUV WST XAF XAG XAU XBA XBB XBC XBD XCD XDR XEU XFO XFU XOF XPD XPF
-                        XPT XRE XSU XTS XUA XXX YDD YER YUD YUM YUN ZAL ZAR ZMK ZRN ZRZ ZWC
-                        ZWD ZWL ZWN ZWR)
+                        DEM DJF DKK DOP DZD ECS ECV EEK EGP EQE ERN ESA ESB ESP ETB
+                        EUR FIM FJD FKP FRF GBP GEK GEL GHC GHP GHS GIP GMD GNE GNF
+                        GNS GQE GRD GTQ GWE GWP GYD HKD HNL HRD HRK HTG HUF IDR IEP
+                        ILP ILR ILS INR IQD IRR ISJ ISK ITL JMD JOD JPY KES KGS KHR
+                        KMF KPW KRW KWD KYD KZT LAJ LAK LBP LKR LRD LSL LSM LTL LTT
+                        LUC LUF LUL LVL LVR LYD MAD MAF MDL MGA MGF MKD MLF MMK MNT
+                        MOP MRO MTL MTP MUR MVQ MVR MWK MXN MXP MXV MYR MZE MZM MZN
+                        NAD NGN NIC NIO NLG NOK NPR NZD OMR PAB PEH PEI PEN PES PGK
+                        PHP PKR PLN PLZ PTE PYG QAR RHD ROK ROL RON RSD RUB RUR RWF
+                        SAR SBD SCR SDD SDG SDP SEK SGD SHP SIT SKK SLL SOS SRD SRG
+                        SSP STD SUR SVC SYP SZL THB TJR TJS TMM TMT TND TOP TPE TRL
+                        TRY TTD TWD TZS UAH UAK UGS UGW UGX USD USN USS UYI UYN UYP
+                        UYU UZS VEB VEF VNC VND VUV WST XAF XAG XAU XBA XBB XBC XBD
+                        XCD XDR XEU XFO XFU XOF XPD XPF XPT XRE XSU XTS XUA XXX YDD
+                        YER YUD YUM YUN ZAL ZAR ZMK ZRN ZRZ ZWC ZWD ZWL ZWN ZWR)
 
     COUNTRY_CODES = %w(AC AD AE AF AG AI AL AM AN AO AQ AR AS AT AU AW AX AZ BA BB BD
                        BE BF BG BH BI BJ BM BN BO BR BS BT BV BW BY BZ CA CC CD CF CG
@@ -53,14 +54,12 @@ module Trustev
       raise Error.new('Transaction options are missing') if transaction.nil?
       validate(transaction)
       Trustev.send_request SERVICE_URL, build(transaction), 'POST'
-      true
     end
 
     def update(transaction=nil)
       raise Error.new('Transaction options are missing') if transaction.nil?
       validate(transaction)
       Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}", build(transaction), 'PUT'
-      true
     end
 
     def set_status(status, reason, comment)
@@ -73,7 +72,6 @@ module Trustev
         Comment: comment
       }
       Trustev.send_request "#{SERVICE_URL}/#{@transaction_number}/Status", body, 'PUT'
-      true
     end
 
     def set_bin(bin)
@@ -138,7 +136,7 @@ module Trustev
       unless transaction[:social_network].nil?
         built_transaction[:SocialNetwork] = {
           Type: transaction[:social_network][:type],
-          Id: transaction[:social_network][:ID]
+          Id: transaction[:social_network][:id]
         }
       end
 
