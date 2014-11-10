@@ -9,7 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Jonah Hirsch']
   spec.email         = ['jonah@giftcardzen.com']
   spec.summary       = %q{Ruby wrapper for Trustev API.}
-  spec.homepage      = ''
+  spec.description   = %q{A Ruby wrapper for the Trustev API.}
+  spec.homepage      = 'https://github.com/giftcardzen/trustev'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -19,9 +20,9 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler', '~> 1.6'
   spec.add_development_dependency 'rake', '~> 10.0'
-  spec.add_development_dependency 'minitest', '~> 5.4.2'
-  spec.add_development_dependency 'simplecov', '~> 0.9.1'
+  spec.add_development_dependency 'minitest', '~> 5.4'
+  spec.add_development_dependency 'simplecov', '~> 0.9'
 
-  spec.add_runtime_dependency 'httparty', '~> 0.13.1'
-  spec.add_runtime_dependency 'multi_json', '~> 1.10.1'
+  spec.add_runtime_dependency 'httparty', '~> 0.13'
+  spec.add_runtime_dependency 'multi_json', '~> 1.10'
 end

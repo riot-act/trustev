@@ -39,12 +39,6 @@ module Trustev
                        TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ
                        VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW)
 
-    ADDRESS_TYPES = [0, 1, 2]
-
-    STATUS_TYPES = [0, 1, 2, 3, 5, 8]
-
-    REASON_TYPES = [0, 1, 2, 3, 4]
-
     def initialize(transaction_number)
       raise Error.new('TransactionNumber is required.') if transaction_number.nil?
       @transaction_number = transaction_number
@@ -63,8 +57,8 @@ module Trustev
     end
 
     def set_status(status, reason, comment)
-      raise Error.new('Invalid Status Code') if STATUS_TYPES.index(status).nil?
-      raise Error.new('Invalid Reason Code') if REASON_TYPES.index(reason).nil?
+      raise Error.new('Invalid Status Code') if Trustev::STATUS_TYPES.key(status).nil?
+      raise Error.new('Invalid Reason Code') if Trustev::REASON_TYPES.key(reason).nil?
       raise Error.new('Status comment cannot be blank') if comment.nil? || comment.empty?
       body = {
         Status: status,
@@ -105,7 +99,7 @@ module Trustev
     def validate_address(address)
       address[:country_code] = 'NS' if address[:country_code].nil?
       raise Error.new('Invalid Country Code') if COUNTRY_CODES.index(address[:country_code]).nil?
-      raise Error.new('Invalid Address Type') if ADDRESS_TYPES.index(address[:type]).nil?
+      raise Error.new('Invalid Address Type') if Trustev::ADDRESS_TYPES.key(address[:type]).nil?
       address
     end
 

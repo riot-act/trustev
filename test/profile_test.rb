@@ -19,7 +19,7 @@ describe Trustev::Profile do
       score_data[:Profile].must_be_instance_of Hash
       score_data[:Profile][:Sources].must_be_instance_of Array
       score_data[:Profile][:Sources][0].must_be_instance_of Hash
-      score_data[:Profile][:Sources][0][:Source].must_equal 7
+      score_data[:Profile][:Sources][0][:Source].must_equal Trustev::SCORE_SOURCES[:trustev]
       score_data[:Profile][:Sources][0][:Scores].must_be_instance_of Array
       score_data[:Profile][:Sources][0][:Scores][0][:Confidence].must_be_instance_of Fixnum
       score_data[:Profile][:Sources][0][:Scores][0][:Parameter].must_be_instance_of Fixnum
@@ -36,8 +36,8 @@ describe Trustev::Profile do
   describe 'when retrieving a specific score' do
     it 'must return that specific score' do
       @profile.retrieve_scores[:Profile][:Sources].each do | source |
-        if source[:Source] == 7
-          source[:Scores].each { | score | score[:Score].must_equal @profile.get_score(7, 0) if score[:Parameter] == 0 }
+        if source[:Source] == Trustev::SCORE_SOURCES[:trustev]
+          source[:Scores].each { | score | score[:Score].must_equal @profile.get_score(7, 0) if score[:Parameter] == Trustev::SCORE_PARAMETERS[:overall] }
         end
       end
     end

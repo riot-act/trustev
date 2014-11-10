@@ -19,7 +19,7 @@ describe Trustev::Social do
       create_social
       Trustev::Social.update(
         {
-          type: 0,
+          type: Trustev::SOCIAL_NETWORK_TYPES[:facebook],
           id: @social_network_id,
           short_term_token: 'CAAGEIkkiehQrXSIK9vHOiPnZB139M',
           long_term_token: 'CAAGXgR7VWu',
@@ -34,7 +34,7 @@ describe Trustev::Social do
   describe 'when deleting social network data' do
     it 'must return a good response code' do
       create_social
-      Trustev::Social.delete(0, @social_network_id).code.must_equal 200
+      Trustev::Social.delete(Trustev::SOCIAL_NETWORK_TYPES[:facebook], @social_network_id).code.must_equal 200
     end
   end
 
@@ -43,7 +43,7 @@ describe Trustev::Social do
   def create_social
     Trustev::Social.create([
       {
-        type: 0,
+        type: Trustev::SOCIAL_NETWORK_TYPES[:facebook],
         id: @social_network_id,
         short_term_token: 'CAAGEIkkiehQrXSIK9vHOiPnZB139M',
         long_term_token: 'CAAGXgR7VWu',

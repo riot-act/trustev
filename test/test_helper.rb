@@ -10,7 +10,7 @@ Trustev.private_key = '65950d41f8d3ea86dc25aaf893ba15db'
 def build_transaction
   {
     social_network: {
-      type: 0,
+      type: Trustev::SOCIAL_NETWORK_TYPES[:facebook],
       id: '780218520'
     },
     transaction_data: {
@@ -23,7 +23,7 @@ def build_transaction
       timestamp: 1391449224000,
       address: [
         {
-          type: 0,
+          type: Trustev::ADDRESS_TYPES[:standard],
           first_name: 'Joe',
           last_name: 'Bloggs',
           address_1: '2011',
@@ -61,7 +61,7 @@ def build_transaction
       ],
       address: [
         {
-          type: 0,
+          type: Trustev::ADDRESS_TYPES[:standard],
           first_name: 'Joe',
           last_name: 'Bloggs',
           address_1: '2011',

@@ -70,7 +70,7 @@ Only the following fields are required:
  transaction.create(
    {
      social_network: {
-       type: 0,
+       type: Trustev::SOCIAL_NETWORK_TYPES[:facebook],
        id: '12345678'
      },
      transaction_data: {
@@ -83,7 +83,7 @@ Only the following fields are required:
        timestamp: 1391449224000,
        address: [
          {
-           type: 0,
+           type: Trustev::ADDRESS_TYPES[:standard],
            first_name: 'Joe',
            last_name: 'Bloggs',
            address_1: '2011',
@@ -121,7 +121,7 @@ Only the following fields are required:
        ],
        address: [
          {
-           type: 0,
+           type: Trustev::ADDRESS_TYPES[:standard],
            first_name: 'Joe',
            last_name: 'Bloggs',
            address_1: '2011',
@@ -153,7 +153,9 @@ This takes the same parameters as `Trustev::transaction.create`
 ```ruby
  # transaction.set_status(status, reason, comment)
  transaction = Trustev::Transaction.new('1234abcd')
- transaction.set_status(3, 2, 'Transaction was refused due to a Trustev Score of 35')
+ transaction.set_status(Trustev::STATUS_TYPES[:refunded],
+                        Trustev::REASON_TYPES[:complaint],
+                        'Transaction was refunded due to a complaint')
 ```
 
 | Status Code | Description |
@@ -192,7 +194,7 @@ See the [trustev API documentation](http://developers.trustev.com/#addtransactio
 ```ruby
  Trustev::Social.create([
    {
-     type: 0,
+     type: Trustev::SOCIAL_NETWORK_TYPES[:facebook],
      id: 780219323,
      short_term_token: 'CAAGEIkkiTM4BAHR9ar4XH4uTqK6JaOF1aIGbCBrsQgocHUh9',
      long_term_token: 'CAAGEIkkiTM4BAJyc0pMxQQAprOrNlMRODaVQgQtcvlNO7Rvab',
@@ -216,8 +218,8 @@ See the [trustev API documentation](http://developers.trustev.com/#addprofile) f
 
 This is similar `Trustev::Social.create`, but only accepts ONE hash, instead of an array of hashes.
 ```ruby
- Trustev::transaction.update({
-   type: 0,
+ Trustev::Social.update({
+   type: Trustev::SOCIAL_NETWORK_TYPES[:facebook],
    id: 780219323,
    short_term_token: 'CAAGEIkkiTM4BAHR9ar4XH4uTqK6JaOF1aIGbCBrsQgocHUh9',
    long_term_token: 'CAAGEIkkiTM4BAJyc0pMxQQAprOrNlMRODaVQgQtcvlNO7Rvab',
@@ -230,7 +232,7 @@ This is similar `Trustev::Social.create`, but only accepts ONE hash, instead of 
 #### Delete Social
 ```ruby
  # Trustev::Social.delete(social_network_type, social_network_id)
- Trustev::Social.delete(0, 780219323)
+ Trustev::Social.delete(Trustev::SOCIAL_NETWORK_TYPES[:facebook], 780219323)
 ``` 
 
 ### Profile
@@ -289,7 +291,7 @@ This returns the overall Trustev score
  # profile = Trustev::Profile.new(transaction_number)
  # profile.get_score(source_id, parameter_id)
  Trustev::Profile.retrieve('1234abcd')
- profile.get_score(7, 0)
+ profile.get_score(Trustev::SCORE_SOURCES[:trustev], Trustev::SCORE_PARAMETERS[:overall])
 ```
 
 This returns a score from a specific source and parameter 

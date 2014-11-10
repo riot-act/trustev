@@ -19,6 +19,65 @@ module Trustev
   @@token = nil
   @@token_expire = nil
 
+  ADDRESS_TYPES = {
+    standard: 0,
+    billing: 1,
+    delivery: 2
+  }
+
+  SOCIAL_NETWORK_TYPES = {
+    facebook: 0,
+    twitter: 1,
+    linkedin: 2,
+    trustev: 3
+  }
+
+  STATUS_TYPES = {
+    init: 0,
+    placed: 1,
+    refunded: 2,
+    rejected: 3,
+    completed: 5,
+    chargeback: 8
+  }
+
+  REASON_TYPES = {
+    system: 0,
+    fraud: 1,
+    complaint: 2,
+    remorse: 3,
+    other: 4
+  }
+
+  SCORE_SOURCES = {
+    address: 0,
+    behaviour: 1,
+    device: 2,
+    email: 3,
+    facebook: 4,
+    IP: 5,
+    transaction: 6,
+    trustev: 7,
+    velocity: 8
+  }
+
+  SCORE_PARAMETERS = {
+    overall: 0,
+    billing: 1,
+    delivery: 2,
+    input: 3,
+    domain: 4,
+    address: 5,
+    IP: 6,
+    proxy: 7,
+    VPN: 8,
+    value: 9,
+    velocity: 10,
+    legitimacy: 11,
+    pattern: 12,
+    hustle: 13
+  }
+
   def self.username=(username)
     @@username = username
   end
