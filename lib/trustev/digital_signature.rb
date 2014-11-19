@@ -18,6 +18,11 @@ module Trustev
     end
 
     def valid?
+      unless Trustev.public_key.nil?
+        response = HTTParty.get(Trustev.api_url("Trustev.js?key=#{Trustev.public_key}"))
+        raise Error.new('Invalid Public Key') if response.code == 401
+        return true if response.code != 200
+      end
       build_signature == @digital_signature
     end
 
