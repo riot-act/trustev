@@ -31,7 +31,8 @@ Or install it yourself as:
  #This is your Trustev Site Private Key, available from Reliance.
  Trustev.private_key = 'ffffffff'
  #This is your Trustev Site Public Key, available from Reliance.
- # This parameter is OPTIONAL, but if you do NOT include it, `Trustev::DigitalSignature.valid?` will return FALSE if Trustev's servers are inaccessible
+ # This parameter is OPTIONAL, but if you do NOT include it, `Trustev::DigitalSignature.valid?`
+ # will return FALSE if Trustev's servers are inaccessible
  Trustev.public_key = 'f0f0f0f0'
  ```
 
