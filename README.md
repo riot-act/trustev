@@ -2,6 +2,9 @@
 
 Ruby wrapper for Trustev API
 
+[![Gem Version](https://badge.fury.io/rb/trustev.svg)](http://badge.fury.io/rb/trustev)
+![Codeship](https://codeship.com/projects/1e231930-5253-0132-d3ec-72279d09a1d7/status?branch=master)
+
 ## Installation
 
 Add this line to your application's Gemfile:
