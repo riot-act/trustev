@@ -21,7 +21,6 @@ module Trustev
       unless Trustev.public_key.nil?
         begin
           response = HTTParty.get("https://js.trustev.com/v1.2/Trustev.js?key=#{Trustev.public_key}")
-          puts "RESPONSE CODE: #{response.code}"
           raise Error.new('Invalid Public Key') if response.code == 401
           return true if response.code != 200
         rescue Errno::ECONNREFUSED
