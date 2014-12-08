@@ -248,7 +248,7 @@ This is similar `Trustev::Social.create`, but only accepts ONE hash, instead of 
 ```ruby
  # profile = Trustev::Profile.new(transaction_number)
  # profile.retrieve_scores
- Trustev::Profile.retrieve('1234abcd')
+ profile = Trustev::Profile.new('1234abcd')
  profile.retrieve_scores
 ```
 
@@ -287,7 +287,7 @@ This returns a hash with the Trustev Score.
 ```ruby
  # profile = Trustev::Profile.new(transaction_number)
  # profile.get_overall_score
- Trustev::Profile.retrieve('1234abcd')
+ profile = Trustev::Profile.new('1234abcd')
  profile.get_overall_score
 ```
 
@@ -297,7 +297,7 @@ This returns the overall Trustev score
 ```ruby
  # profile = Trustev::Profile.new(transaction_number)
  # profile.get_score(source_id, parameter_id)
- Trustev::Profile.retrieve('1234abcd')
+ profile = Trustev::Profile.new('1234abcd')
  profile.get_score(Trustev::SCORE_SOURCES[:trustev], Trustev::SCORE_PARAMETERS[:overall])
 ```
 
