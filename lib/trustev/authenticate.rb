@@ -1,4 +1,4 @@
-require 'digest'
+require 'openssl'
 
 module Trustev
   class Authenticate
@@ -36,10 +36,10 @@ module Trustev
     end
 
     def self.generate_hash(modifier, time)
-      sha256 = Digest::SHA256.new
+      sha256 = OpenSSL::Digest::SHA256.new
       sha256 << "#{time.strftime '%Y%m%d%H%M%S'}.#{modifier}"
       hash_part_1 = sha256.hexdigest
-      sha256 = Digest::SHA256.new
+      sha256 = OpenSSL::Digest::SHA256.new
       sha256 << "#{hash_part_1}.#{Trustev.shared_secret}"
       sha256.hexdigest
     end

@@ -1,4 +1,4 @@
-require 'digest'
+require 'openssl'
 
 module Trustev
   class DigitalSignature
@@ -37,11 +37,11 @@ module Trustev
     private
 
     def build_signature
-      sha256 = Digest::SHA256.new
+      sha256 = OpenSSL::Digest::SHA256.new
       sha256 << "#{Trustev.username}.#{Trustev.private_key}.#{@timestamp}#{@stage_1}"
       stage_2 = sha256.hexdigest
 
-      sha256 = Digest::SHA256.new
+      sha256 = OpenSSL::Digest::SHA256.new
       sha256 << "#{stage_2}.#{Trustev.private_key}.#{@session_id}"
       sha256.hexdigest
     end
