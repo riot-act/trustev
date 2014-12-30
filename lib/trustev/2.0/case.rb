@@ -6,7 +6,6 @@ module Trustev
     SERVICE_URL = 'Case'
 
     def initialize(case_id=nil, transaction, case_number, session_id, customer, statuses, payments, timestamp=Trustev::Timestamp.new)
-      raise Error.new('API v2.0 required.') if Trustev::api_version != '2.0'
       raise Error.new('Transaction is required.') if transaction.nil?
       raise Error.new('Case Number is required.') if case_number.nil?
       raise Error.new('Session ID is required.') if session_id.nil?

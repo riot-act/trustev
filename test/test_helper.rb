@@ -6,6 +6,7 @@ Trustev.username = 'FancyTees'
 Trustev.password = '58dcca6b98a24e5a80b2a3682190da1a'
 Trustev.shared_secret = '48357fbb820c407f855d72893d3f47ed'
 Trustev.private_key = '65950d41f8d3ea86dc25aaf893ba15db'
+Trustev.api_version = '1.2'
 
 def build_transaction
   {

@@ -4,7 +4,6 @@ module Trustev
     SERVICE_URL = 'ProfileService.svc/rest/Transaction'
 
     def initialize(transaction_number)
-      raise Error.new('API v1.2 required.') if Trustev::api_version != '1.2'
       raise Error.new('Transaction Number is required') if transaction_number.nil?
       @transaction_number = transaction_number
     end

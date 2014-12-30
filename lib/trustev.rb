@@ -2,10 +2,6 @@ require 'httparty'
 require 'multi_json'
 
 require 'trustev/version'
-require 'trustev/authenticate'
-require 'trustev/profile'
-require 'trustev/social'
-require 'trustev/transaction'
 require 'trustev/error'
 require 'trustev/digital_signature'
 
@@ -16,9 +12,11 @@ module Trustev
   @@private_key = nil
   @@public_key = nil
   @@api_base = 'https://api.trustev.com/v'
-  @@api_version = '1.2'
+  @@api_version = nil
   @@token = nil
   @@token_expire = nil
+
+  API_VERSIONS = %w(1.2 2.0)
 
   ADDRESS_TYPES = {
     standard: 0,
@@ -79,6 +77,13 @@ module Trustev
     hustle: 13
   }
 
+  DECISIONS = {
+    unknown: 0,
+    pass: 1,
+    flag: 2,
+    fail: 3
+  }
+
   def self.username=(username)
     @@username = username
   end
@@ -137,6 +142,24 @@ module Trustev
 
   def self.token_expire
     @@token_expire
+  end
+
+  def self.api_version
+    @@api_version
+  end
+
+  def self.api_version=(api_version)
+    @@api_version = api_version
+    raise Error.new("API v#{api_version} not supported.") unless API_VERSIONS.include? api_version
+    if api_version == '1.2'
+      require "trustev/#{api_version}/authenticate"
+      require "trustev/#{api_version}/profile"
+      require "trustev/#{api_version}/social"
+      require "trustev/#{api_version}/transaction"
+    elsif api_version == '2.0'
+      require "trustev/#{api_version}/case"
+      require "trustev/#{api_version}/decision"
+    end
   end
 
   def self.send_request(path, body, method, expect_json=false, requires_token=true)
