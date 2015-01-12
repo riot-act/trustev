@@ -1,13 +1,6 @@
 module Trustev
   class Status < CaseAttribute
 
-    def initialize(case_id, opts)
-      raise Error.new('Case ID is required') if case_id.nil?
-
-      @case_id = case_id
-      @opts = opts
-    end
-
     def create
       Trustev.send_request url, build, 'POST'
     end

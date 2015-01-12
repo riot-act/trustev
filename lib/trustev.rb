@@ -1,5 +1,6 @@
 require 'httparty'
 require 'multi_json'
+require 'require_all'
 
 require 'trustev/version'
 require 'trustev/error'
@@ -11,7 +12,6 @@ module Trustev
   @@shared_secret = nil
   @@private_key = nil
   @@public_key = nil
-  @@api_base = 'https://api.trustev.com/v'
   @@api_version = nil
   @@token = nil
   @@token_expire = nil
@@ -161,7 +161,12 @@ module Trustev
   def self.api_version=(api_version)
     @@api_version = api_version
     raise Error.new("API v#{api_version} not supported.") unless API_VERSIONS.include? api_version
-    Dir["trustev/#{api_version}/*.rb"].each {|file| require file }
+    require_rel "trustev/#{api_version}"
+    if api_version == '1.2'
+      @@api_base = 'https://api.trustev.com/v'
+    elsif api_version == '2.0'
+      @@api_base = 'https://app.trustev.com/api/v'
+    end
   end
 
   def self.send_request(path, body, method, expect_json=false, requires_token=true)
@@ -177,7 +182,7 @@ module Trustev
     headers = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
     headers['X-Authorization'] = "#{@@username} #{@@token}" if requires_token
 
-    body = { request:  body }
+    body = { request:  body } if @@api_version == '1.2'
 
     options = { body: body.to_json, headers: headers}
 

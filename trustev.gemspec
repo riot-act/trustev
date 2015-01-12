@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'httparty', '~> 0.13'
   spec.add_runtime_dependency 'multi_json', '~> 1.10'
+  spec.add_runtime_dependency 'require_all', '~> 1.3'
 end
