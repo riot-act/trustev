@@ -157,6 +157,7 @@ module Trustev
       require "trustev/#{api_version}/social"
       require "trustev/#{api_version}/transaction"
     elsif api_version == '2.0'
+      require "trustev/#{api_Version}/authenticate"
       require "trustev/#{api_version}/case"
       require "trustev/#{api_version}/decision"
     end
@@ -198,6 +199,11 @@ module Trustev
   private
 
   def self.invalid_token?
-    @@token.nil? || @@token_expire-600 <= Time.now.to_i
+    if @@api_version == '1.2'
+      now = Time.now.to_i
+    elsif @@api_version == '2.0'
+      now = Time.now
+    end
+    @@token.nil? || @@token_expire-600 <= now
   end
 end

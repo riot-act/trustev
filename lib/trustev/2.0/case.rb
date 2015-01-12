@@ -47,7 +47,7 @@ module Trustev
         Customer: @customer,
         Statuses: @statuses,
         Payments: @payments,
-        Timestamp: @timestamp
+        Timestamp: @timestamp.to_s
       }
     end
   end
