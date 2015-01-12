@@ -165,6 +165,8 @@ module Trustev
 
   def self.send_request(path, body, method, expect_json=false, requires_token=true)
 
+    expect_json = true if @@api_version == '2.0'
+
     if requires_token && invalid_token?
       Authenticate.retrieve_token
     end
