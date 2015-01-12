@@ -1,24 +1,22 @@
 module Trustev
-  class Email
+  class Email < CaseAttribute
 
     SERVICE_URL = 'customer/email'
 
-    def initialize(case_id, id, email, is_default=false)
+    def initialize(case_id, opts)
       raise Error.new('Case ID is required') if case_id.nil?
 
       @case_id = case_id
-      @id = id
-      @email = email
-      @is_default = is_default
+      @opts = opts
     end
 
     def create
-      raise Error.new('Email is required') if email.nil?
+      raise Error.new('Email is required') if @opts[:email].nil?
       Trustev.send_request url, build, 'POST'
     end
 
     def retrieve
-      raise Error.new('ID is required') if id.nil?
+      raise Error.new('ID is required') if @opts[:id].nil?
       Trustev.send_request url(true), {}, 'GET'
     end
 
@@ -27,23 +25,18 @@ module Trustev
     end
 
     def update
-      raise Error.new('Email is required') if email.nil?
-      Trustev.send_request url(true), {}, 'PUT'
+      raise Error.new('Email is required') if @opts[:email].nil?
+      raise Error.new('ID is required') if @opts[:id].nil?
+      Trustev.send_request url(true), build, 'PUT'
     end
 
     private
 
-    def url(with_identifier=false)
-      url = "case/#{@case_id}/#{SERVICE_URL}"
-      url = "#{url}/#{@id}" if with_identifier
-      url
-    end
-
     def build
       {
-        Id: @id,
-        EmailAddress: @email,
-        IsDefault: @is_default
+        Id: @opts[:id],
+        EmailAddress: @opts[:email],
+        IsDefault: @opts[:is_default]
       }
     end
   end

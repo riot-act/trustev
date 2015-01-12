@@ -1,7 +1,7 @@
 module Trustev
-  class Customer < CaseAttribute
+  class Transaction < CaseAttribute
 
-    SERVICE_URL = 'customer'
+    SERVICE_URL = 'transaction'
 
     def initialize(case_id, opts)
       raise Error.new('Case ID is required') if case_id.nil?
@@ -29,13 +29,11 @@ module Trustev
     def build
       {
         Id: @opts[:id],
-        FirstName: @opts[:first_name],
-        LastName: @opts[:last_name],
-        Emails: @opts[:emails],
-        PhoneNumber: @opts[:phone_number],
-        DateOfBirth: @opts[:dob],
-        Addresses: @opts[:addresses],
-        SocialAccounts: @opts[:social_accounts]
+        TotalTransactionValue: @opts[:total_transaction_value],
+        Currency: @opts[:currency_code],
+        timestamp: @opts[:timestamp],
+        addresses: @opts[:addresses],
+        items: @opts[:items]
       }
     end
   end

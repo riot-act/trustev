@@ -1,7 +1,7 @@
 module Trustev
-  class Customer < CaseAttribute
+  class Payment < CaseAttribute
 
-    SERVICE_URL = 'customer'
+    SERVICE_URL = 'payment'
 
     def initialize(case_id, opts)
       raise Error.new('Case ID is required') if case_id.nil?
@@ -19,6 +19,10 @@ module Trustev
       Trustev.send_request url(true), {}, 'GET'
     end
 
+    def retrieve_all
+      Trustev.send_request url, {}, 'GET'
+    end
+
     def update
       raise Error.new('ID is required') if @opts[:id].nil?
       Trustev.send_request url(true), build, 'PUT'
@@ -29,13 +33,8 @@ module Trustev
     def build
       {
         Id: @opts[:id],
-        FirstName: @opts[:first_name],
-        LastName: @opts[:last_name],
-        Emails: @opts[:emails],
-        PhoneNumber: @opts[:phone_number],
-        DateOfBirth: @opts[:dob],
-        Addresses: @opts[:addresses],
-        SocialAccounts: @opts[:social_accounts]
+        PaymentType: @opts[:payment_type],
+        BINNumber: @opts[:bin_number]
       }
     end
   end

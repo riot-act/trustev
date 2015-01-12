@@ -1,7 +1,5 @@
 module Trustev
-  class Customer < CaseAttribute
-
-    SERVICE_URL = 'customer'
+  class Address < CaseAttribute
 
     def initialize(case_id, opts)
       raise Error.new('Case ID is required') if case_id.nil?
@@ -19,6 +17,10 @@ module Trustev
       Trustev.send_request url(true), {}, 'GET'
     end
 
+    def retrieve_all
+      Trustev.send_request url, {}, 'GET'
+    end
+
     def update
       raise Error.new('ID is required') if @opts[:id].nil?
       Trustev.send_request url(true), build, 'PUT'
@@ -31,11 +33,16 @@ module Trustev
         Id: @opts[:id],
         FirstName: @opts[:first_name],
         LastName: @opts[:last_name],
-        Emails: @opts[:emails],
-        PhoneNumber: @opts[:phone_number],
-        DateOfBirth: @opts[:dob],
-        Addresses: @opts[:addresses],
-        SocialAccounts: @opts[:social_accounts]
+        Address1: @opts[:address1],
+        Address2: @opts[:address2],
+        Address3: @opts[:address3],
+        City: @opts[:city],
+        State: @opts[:state],
+        PostalCode: @opts[:postal_code],
+        Type: @opts[:type],
+        CountryCode: @opts[:country_code],
+        Timestamp: @opts[:timestamp],
+        IsDefault: @opts[:is_Default]
       }
     end
   end

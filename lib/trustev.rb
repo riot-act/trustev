@@ -28,7 +28,8 @@ module Trustev
     facebook: 0,
     twitter: 1,
     linkedin: 2,
-    trustev: 3
+    trustev: 3,
+    trustev_session: 4
   }
 
   STATUS_TYPES = {
@@ -82,6 +83,15 @@ module Trustev
     pass: 1,
     flag: 2,
     fail: 3
+  }
+
+  PAYMENT_TYPES = {
+    none: 0,
+    credit_card: 1,
+    debit_card: 2,
+    direct_debit: 3,
+    paypal: 4,
+    bitcoin: 5
   }
 
   def self.username=(username)
@@ -151,16 +161,7 @@ module Trustev
   def self.api_version=(api_version)
     @@api_version = api_version
     raise Error.new("API v#{api_version} not supported.") unless API_VERSIONS.include? api_version
-    if api_version == '1.2'
-      require "trustev/#{api_version}/authenticate"
-      require "trustev/#{api_version}/profile"
-      require "trustev/#{api_version}/social"
-      require "trustev/#{api_version}/transaction"
-    elsif api_version == '2.0'
-      require "trustev/#{api_Version}/authenticate"
-      require "trustev/#{api_version}/case"
-      require "trustev/#{api_version}/decision"
-    end
+    Dir["trustev/#{api_version}/*.rb"].each {|file| require file }
   end
 
   def self.send_request(path, body, method, expect_json=false, requires_token=true)

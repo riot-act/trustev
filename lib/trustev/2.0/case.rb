@@ -1,26 +1,20 @@
 require 'digest'
 
 module Trustev
-  class Transaction
+  class Case
 
     SERVICE_URL = 'Case'
 
-    def initialize(case_id=nil, transaction, case_number, session_id, customer, statuses, payments, timestamp=Trustev::Timestamp.new)
-      raise Error.new('Transaction is required.') if transaction.nil?
-      raise Error.new('Case Number is required.') if case_number.nil?
-      raise Error.new('Session ID is required.') if session_id.nil?
-      raise Error.new('Customer is required.') if customer.nil?
-      raise Error.new('Statuses is required.') if statuses.nil?
-      raise Error.new('Payments is required.') if payments.nil?
-      raise Error.new('Invalid timestamp.') unless timestamp.instance_of?(Trustev::Timestamp)
+    def initialize(case_id=nil, opts)#transaction, case_number, session_id, customer, statuses, payments, timestamp=Trustev::Timestamp.new)
+      raise Error.new('Transaction is required.') if opts[:transaction].nil?
+      raise Error.new('Case Number is required.') if opts[:case_number].nil?
+      raise Error.new('Session ID is required.') if opts[:session_id].nil?
+      raise Error.new('Customer is required.') if opts[:customer].nil?
+      raise Error.new('Statuses is required.') if opts[:statuses].nil?
+      raise Error.new('Payments is required.') if opts[:payments].nil?
+      raise Error.new('Invalid timestamp.') unless opts[:timestamp].instance_of?(Trustev::Timestamp)
       @case_id = case_id
-      @transaction = transaction
-      @case_number = case_number
-      @session_id = session_id
-      @customer = customer
-      @statuses = statuses
-      @payments = payments
-      @timestamp = timestamp
+      @opts = opts
     end
 
     def create
@@ -41,13 +35,13 @@ module Trustev
 
     def build
       {
-        SessionId: @session_id,
-        CaseNumber: @case_number,
-        Transaction: @transaction,
-        Customer: @customer,
-        Statuses: @statuses,
-        Payments: @payments,
-        Timestamp: @timestamp.to_s
+        SessionId: @opts[:session_id],
+        CaseNumber: @opts[:case_number],
+        Transaction: @opts[:transaction],
+        Customer: @opts[:customer],
+        Statuses: @opts[:statuses],
+        Payments: @opts[:payments],
+        Timestamp: @opts[:timestamp].to_s
       }
     end
   end

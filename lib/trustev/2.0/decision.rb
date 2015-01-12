@@ -1,5 +1,5 @@
 module Trustev
-  class Profile
+  class Decision
 
     SERVICE_URL = 'Decision'
 
