@@ -10,5 +10,9 @@ module Trustev
 
       super(message)
     end
+
+    def to_s
+      @message
+    end
   end
 end
