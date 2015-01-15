@@ -191,7 +191,14 @@ module Trustev
     response = HTTParty.put(api_url(path), options) if method == 'PUT'
     response = HTTParty.delete(api_url(path), options) if method == 'DELETE'
 
-    raise Error.new('Bad API response', response.code, response.message) if response.code != 200
+    if @@api_version == '1.2'
+      raise Error.new('Bad API response', response.code, response.body.message) if response.code != 200
+    elsif @@api_version == '2.0'
+      if response.code != 200
+        error_response = MultiJson.load(response.body, symbolize_keys: true)
+        raise Error.new('Bad API response', response.code, error_response[:Message])
+      end
+    end
 
     if expect_json
       begin
@@ -209,9 +216,11 @@ module Trustev
   def self.invalid_token?
     if @@api_version == '1.2'
       now = Time.now.to_i
+      timestamp = @@token_expire
     elsif @@api_version == '2.0'
       now = Time.now
+      timestamp = @@token_expire? @@token_expire.timestamp : 0
     end
-    @@token.nil? || @@token_expire-600 <= now
+    @@token.nil? || timestamp-600 <= now
   end
 end

@@ -9,5 +9,9 @@ module Trustev
     def to_s
       @timestamp.strftime('%Y-%m-%dT%H:%M:%S.%LZ')
     end
+
+    def timestamp
+      @timestamp
+    end
   end
 end

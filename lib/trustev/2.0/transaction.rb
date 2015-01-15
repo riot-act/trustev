@@ -8,26 +8,23 @@ module Trustev
     end
 
     def retrieve
-      raise Error.new('ID is required') if @opts[:id].nil?
-      Trustev.send_request url(true), {}, 'GET'
+      Trustev.send_request url, {}, 'GET'
     end
 
     def update
-      raise Error.new('ID is required') if @opts[:id].nil?
-      Trustev.send_request url(true), build, 'PUT'
+      Trustev.send_request url, build, 'PUT'
     end
 
-    private
-
     def build
-      {
-        Id: @opts[:id],
+      transaction = {
         TotalTransactionValue: @opts[:total_transaction_value],
         Currency: @opts[:currency_code],
         timestamp: @opts[:timestamp],
         addresses: @opts[:addresses],
         items: @opts[:items]
       }
+      transaction[:id] = @opts[:id] unless @opts[:id].nil?
+      transaction
     end
   end
 end

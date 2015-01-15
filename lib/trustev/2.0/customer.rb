@@ -8,18 +8,15 @@ module Trustev
     end
 
     def retrieve
-      Trustev.send_request url(true), {}, 'GET'
+      Trustev.send_request url, {}, 'GET'
     end
 
     def update
-      Trustev.send_request url(true), build, 'PUT'
+      Trustev.send_request url, build, 'PUT'
     end
 
-    private
-
     def build
-      {
-        Id: @opts[:id],
+      customer = {
         FirstName: @opts[:first_name],
         LastName: @opts[:last_name],
         Emails: @opts[:emails],
@@ -28,6 +25,8 @@ module Trustev
         Addresses: @opts[:addresses],
         SocialAccounts: @opts[:social_accounts]
       }
+      customer[:id] = @opts[:id] unless @opts[:id].nil?
+      customer
     end
   end
 end

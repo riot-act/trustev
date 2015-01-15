@@ -1,7 +1,7 @@
 module Trustev
   class Address < CaseAttribute
     def create
-      Trustev.send_request url, build, 'POST'
+      super(Trustev.send_request url, build, 'POST')
     end
 
     def retrieve
@@ -18,11 +18,8 @@ module Trustev
       Trustev.send_request url(true), build, 'PUT'
     end
 
-    private
-
     def build
-      {
-        Id: @opts[:id],
+      address = {
         FirstName: @opts[:first_name],
         LastName: @opts[:last_name],
         Address1: @opts[:address1],
@@ -34,8 +31,11 @@ module Trustev
         Type: @opts[:type],
         CountryCode: @opts[:country_code],
         Timestamp: @opts[:timestamp],
-        IsDefault: @opts[:is_Default]
+        IsDefault: @opts[:is_default]
       }
+      address[:id] = @opts[:id] unless @opts[:id].nil?
+
+      address
     end
   end
 end

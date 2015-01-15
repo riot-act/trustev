@@ -23,14 +23,13 @@ module Trustev
       Trustev.send_request url(true), build, 'PUT'
     end
 
-    private
-
     def build
-      {
-        Id: @opts[:id],
+      email = {
         EmailAddress: @opts[:email],
         IsDefault: @opts[:is_default]
       }
+      email[:id] = @opts[:id] unless @opts[:id].nil?
+      email
     end
   end
 end

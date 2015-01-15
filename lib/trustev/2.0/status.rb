@@ -1,6 +1,8 @@
 module Trustev
   class Status < CaseAttribute
 
+    SERVICE_URL = 'status'
+
     def create
       Trustev.send_request url, build, 'POST'
     end
@@ -19,15 +21,14 @@ module Trustev
       Trustev.send_request url(true), build, 'PUT'
     end
 
-    private
-
     def build
-      {
-        Id: @opts[:id],
+      status = {
         Status: @opts[:status],
         Comment: @opts[:comment],
         Timestamp: @opts[:timestamp]
       }
+      status[:id] = @opts[:id] unless @opts[:id].nil?
+      status
     end
   end
 end

@@ -21,14 +21,13 @@ module Trustev
       Trustev.send_request url(true), build, 'PUT'
     end
 
-    private
-
     def build
-      {
-        Id: @opts[:id],
+      payment = {
         PaymentType: @opts[:payment_type],
         BINNumber: @opts[:bin_number]
       }
+      payment[:id] = @opts[:id] unless @opts[:id].nil?
+      payment
     end
   end
 end

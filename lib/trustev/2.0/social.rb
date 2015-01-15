@@ -1,7 +1,7 @@
 module Trustev
   class Social < CaseAttribute
 
-    SERVICE_URL = 'customer/social'
+    SERVICE_URL = 'customer/socialaccount'
 
     def create
       Trustev.send_request url, build, 'POST'
@@ -21,11 +21,8 @@ module Trustev
       Trustev.send_request url(true), build, 'PUT'
     end
 
-    private
-
     def build
-      {
-        Id: @opts[:id],
+      social = {
         SocialId: @opts[:social_id],
         ShortTermAccessToken: @opts[:short_term_access_token],
         LongTermAccessToken: @opts[:long_term_access_token],
@@ -34,6 +31,8 @@ module Trustev
         Secret: @opts[:secret],
         Timestamp: @opts[:timestamp]
       }
+      social[:id] = @opts[:id] unless @opts[:id].nil?
+      social
     end
   end
 end

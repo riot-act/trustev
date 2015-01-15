@@ -1,3 +1,5 @@
+require 'open-uri'
+
 module Trustev
   class Decision
 
@@ -8,8 +10,8 @@ module Trustev
       @case_id = case_id
     end
 
-    def retrieve_decision
-      Trustev.send_request "#{SERVICE_URL}/#{@case_id}", [], 'GET'
+    def retrieve
+      Trustev.send_request "#{SERVICE_URL}/#{URI::encode @case_id}", [], 'GET'
     end
   end
 end

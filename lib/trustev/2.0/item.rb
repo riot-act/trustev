@@ -21,15 +21,14 @@ module Trustev
       Trustev.send_request url(true), build, 'PUT'
     end
 
-    private
-
     def build
-      {
-        Id: @opts[:id],
+      item = {
         Name: @opts[:name],
         Quantity: @opts[:quantity],
         ItemValue: @opts[:item_value]
       }
+      item[:id] = @opts[:id] unless @opts[:id].nil?
+      item
     end
   end
 end

@@ -1,4 +1,4 @@
-require_relative '../lib/trustev'
+require_relative '../../lib/trustev'
 require 'minitest/autorun'
 require 'securerandom'
 
