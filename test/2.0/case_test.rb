@@ -11,7 +11,6 @@ describe Trustev::Case do
 
   describe 'when updating a case' do
     it 'must return a valid response' do
-      #skip 'Broken on trustev\'s end'
       trustev_case = build_case
       response = trustev_case.create
       case_id = response[:Id]
