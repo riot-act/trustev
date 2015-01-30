@@ -11,7 +11,7 @@ Trustev.api_version = '2.0'
 
 def build_case(case_id=nil, case_number=SecureRandom.hex, opts={})
   trustev_case = {
-    session_id: '335e7fbe-3a75-47df-85be-b430253710a2',
+    session_id: '403667e1-90ff-4e07-a17b-055b7c68f3d5',
     case_number: case_number,
     timestamp: Trustev::Timestamp.new.to_s,
     transaction: build_transaction.build,
@@ -23,21 +23,23 @@ def build_case(case_id=nil, case_number=SecureRandom.hex, opts={})
   Trustev::Case.new(case_id, trustev_case)
 end
 
-def build_transaction_address
-  Trustev::TransactionAddress.new({
-                                    first_name: Faker::Name.first_name,
-                                    last_name: Faker::Name.last_name,
-                                    address1: Faker::Address.street_address,
-                                    address2: Faker::Address.building_number,
-                                    address3: Faker::Address.secondary_address,
-                                    city: Faker::Address.city,
-                                    state: Faker::Address.state,
-                                    postal_code: Faker::Address.zip_code,
-                                    type: Trustev::ADDRESS_TYPES.to_a.sample[1],
-                                    country_code: 'US',
-                                    timestamp: Trustev::Timestamp.new.to_s,
-                                    is_default: %w(true false).sample
-                                  })
+def build_transaction_address(opts={})
+  address = {
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    address1: Faker::Address.street_address,
+    address2: Faker::Address.building_number,
+    address3: Faker::Address.secondary_address,
+    city: Faker::Address.city,
+    state: Faker::Address.state,
+    postal_code: Faker::Address.zip_code,
+    type: Trustev::ADDRESS_TYPES.to_a.sample[1],
+    country_code: 'US',
+    timestamp: Trustev::Timestamp.new.to_s,
+    is_default: %w(true false).sample
+  }
+  address.merge! opts
+  Trustev::TransactionAddress.new(address)
 end
 
 def build_customer_address(opts={})
@@ -56,7 +58,7 @@ def build_customer_address(opts={})
     is_default: %w(true false).sample
   }
   address.merge! opts
-  Trustev::TransactionAddress.new(address)
+  Trustev::CustomerAddress.new(address)
 end
 
 def build_item(opts={})
