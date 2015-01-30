@@ -3,15 +3,15 @@ require 'minitest/autorun'
 require 'securerandom'
 require 'faker'
 
-Trustev.username = ENV['TRUSTEV_USERNAME'] #test-GiftcardZen'
-Trustev.password = ENV['TRUSTEV_PASSWORD'] #ecd24e0ae66848c4a9e1273b183a1b01'
-Trustev.shared_secret = ENV['TRUSTEV_SHARED_SECRET'] #9350ac0b77a94ab0aaf7928d71ec695d'
-Trustev.private_key = ENV['TRUSTEV_PRIVATE_KEY'] #1ATGMYU8vYAFNBCrQgJZKSoVUpdBdsV7pTKWQAMTHMU='
+Trustev.username = ENV['TRUSTEV_USERNAME']
+Trustev.password = ENV['TRUSTEV_PASSWORD']
+Trustev.shared_secret = ENV['TRUSTEV_SHARED_SECRET']
+Trustev.private_key = ENV['TRUSTEV_PRIVATE_KEY']
 Trustev.api_version = '2.0'
 
 def build_case(case_id=nil, case_number=SecureRandom.hex, opts={})
   trustev_case = {
-    session_id: '403667e1-90ff-4e07-a17b-055b7c68f3d5',
+    session_id: ENV['TRUSTEV_SESSION_ID'],
     case_number: case_number,
     timestamp: Trustev::Timestamp.new.to_s,
     transaction: build_transaction.build,
