@@ -162,27 +162,15 @@ module Trustev
     @@api_version = api_version
     raise Error.new("API v#{api_version} not supported.") unless API_VERSIONS.include? api_version
     require_rel "trustev/#{api_version}"
-    if api_version == '1.2'
-      @@api_base = 'https://api.trustev.com/v'
-    elsif api_version == '2.0'
-      @@api_base = 'https://app.trustev.com/api/v'
-    end
   end
 
-  def self.send_request(path, body, method, expect_json=false, requires_token=true)
-
-    expect_json = true if @@api_version == '2.0'
-
-    if requires_token && invalid_token?
-      Authenticate.retrieve_token
-    end
+  def self.do_send_request(path, body, method, expect_json=false, requires_token=true)
+    Authenticate.retrieve_token if requires_token && invalid_token?
 
     raise Error.new('Auth token missing or expired') if requires_token && invalid_token?
 
     headers = { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
     headers['X-Authorization'] = "#{@@username} #{@@token}" if requires_token
-
-    body = { request:  body } if @@api_version == '1.2'
 
     options = { body: body.to_json, headers: headers}
 
@@ -190,14 +178,8 @@ module Trustev
     response = HTTParty.get(api_url(path), options) if method == 'GET'
     response = HTTParty.put(api_url(path), options) if method == 'PUT'
     response = HTTParty.delete(api_url(path), options) if method == 'DELETE'
-
-    if @@api_version == '1.2'
-      raise Error.new('Bad API response', response.code, response.body.message) if response.code != 200
-    elsif @@api_version == '2.0'
-      if response.code != 200
-        error_response = MultiJson.load(response.body, symbolize_keys: true)
-        raise Error.new('Bad API response', response.code, error_response[:Message])
-      end
+    if response.code != 200
+      raise_error response
     end
 
     if expect_json
@@ -209,18 +191,5 @@ module Trustev
     end
 
     response
-  end
-
-  private
-
-  def self.invalid_token?
-    if @@api_version == '1.2'
-      now = Time.now.to_i
-      timestamp = @@token_expire
-    elsif @@api_version == '2.0'
-      now = Time.now
-      timestamp = @@token_expire? @@token_expire.timestamp : 0
-    end
-    @@token.nil? || timestamp-600 <= now
   end
 end
