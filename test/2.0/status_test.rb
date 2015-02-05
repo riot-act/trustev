@@ -15,12 +15,14 @@ describe Trustev::Status do
 
   describe 'when retrieving a status' do
     it 'must return a valid response' do
+      skip 'Intermittently broken at Trustev'
       retrieve_case_attribute @status, Trustev::Status, @case_id
     end
   end
 
   describe 'when retrieving all status' do
     it 'must return a valid response' do
+      skip 'Intermittently broken at Trustev'
       retrieve_all_case_attribute Trustev::Status, @case_id
     end
   end
