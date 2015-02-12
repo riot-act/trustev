@@ -146,12 +146,14 @@ end
 
 def update_case_attribute(to_update, builder, case_id, data_to_update)
   object_id = to_update.create[:Id]
+  sleep 2
   object = builder.call({ case_id: case_id, id: object_id }.merge!(data_to_update))
   object.update[:Id].wont_be_nil
 end
 
 def retrieve_case_attribute(to_retrieve, obj_to_retrieve, case_id)
   object_id = to_retrieve.create[:Id]
+  sleep 2
   object = obj_to_retrieve.new id: object_id, case_id: case_id
   object.retrieve[:Id].wont_be_nil
 end

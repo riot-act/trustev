@@ -24,7 +24,6 @@ describe Trustev::Case do
 
   describe 'when retrieving a case' do
     it 'must return a valid response' do
-      skip 'Intermittently broken at Trustev'
       case_id = build_case.create[:Id]
       Trustev::Case.new(case_id).retrieve[:Id].must_equal case_id
     end
