@@ -4,7 +4,6 @@ require 'require_all'
 
 require 'trustev/version'
 require 'trustev/error'
-require 'trustev/digital_signature'
 
 module Trustev
   @@username = nil
