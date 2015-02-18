@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'minitest', '~> 5.4'
   spec.add_development_dependency 'simplecov', '~> 0.9'
   spec.add_development_dependency 'faker', '~> 1.4'
+  spec.add_development_dependency 'parallel_tests', '~> 1.0'
 
   spec.add_runtime_dependency 'httparty', '~> 0.13'
   spec.add_runtime_dependency 'multi_json', '~> 1.10'
