@@ -24,6 +24,7 @@ module Trustev
         DateOfBirth: @opts[:dob],
         Addresses: @opts[:addresses],
         SocialAccounts: @opts[:social_accounts]
+        AccountNumber: @opts[:account_number]
       }
       customer[:id] = @opts[:id] unless @opts[:id].nil?
       customer
