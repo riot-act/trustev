@@ -16,11 +16,6 @@ module Trustev
       Trustev.send_request url, {}, 'GET'
     end
 
-    def update
-      raise Error.new('ID is required') if @opts[:id].nil?
-      Trustev.send_request url(true), build, 'PUT'
-    end
-
     def build
       status = {
         Status: @opts[:status],
